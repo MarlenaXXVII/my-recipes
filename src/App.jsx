@@ -21,7 +21,7 @@ function App() {
                         <NavLink to="recepten">Recepten</NavLink>
                     </li>
                 </ul>
-                <NavLink to="login" className="login-button">Inloggen</NavLink>
+                <NavLink to="login" className="primaryButton">Inloggen</NavLink>
             </div>
         </nav>
         <div className="container">
