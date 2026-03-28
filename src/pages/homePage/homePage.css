@@ -1,3 +1,41 @@
-h1{
-    color: hotpink;
+.home-page-tile{
+    background-color: beige;
+    max-width: 390px;
+    border-radius: 15px;
+    padding: 24px;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+}
+.home-page-tile img{
+    max-width: 48px;
+    padding-bottom: 16px;
+}
+.home-page-tile h3{
+    padding-bottom: 8px;
+}
+.tile-wrapper{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+}
+.intro-wrapper{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    padding: 80px;
+}
+.intro-titles{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+    align-items: center;
+    padding-bottom: 40px;
+ }
+.intro-buttons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    align-items: center;
 }
