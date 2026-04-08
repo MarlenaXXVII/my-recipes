@@ -1,0 +1,108 @@
+.recipe-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 900px;
+}
+.formSection {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    border: 1px solid #e5e7eb;
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 24px;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+}
+.formSection h2 {
+     margin: 0;
+     font-size: 24px;
+     font-weight: 700;
+ }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+.form-row .form-group {
+      flex: 1 1 180px;
+      min-width: 0;
+  }
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+.upload-box {
+    border: 2px dashed #d1d5db;
+    border-radius: 16px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #f9fafb;
+    color: #6b7280;
+    cursor: pointer;
+    text-align: center;
+    padding: 20px;
+}
+.upload-box:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+.upload-icon {
+    font-size: 30px;
+    color: #9ca3af;
+}
+input,
+textarea {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 15px;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+input:focus,
+textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+input::placeholder,
+textarea::placeholder {
+    color: #9ca3af;
+}
+.categories{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.category {
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    color: #374151;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+/*      TODO: Nadat de categorieen klikbaar zijn nog een state toevoegen aan de css     */
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}

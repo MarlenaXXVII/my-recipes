@@ -5,41 +5,82 @@
     font-family: "Inter", sans-serif;
 }
 .App{
-    width: 1280px;
-    margin: auto;
+     width: 1280px;
+     margin: auto;
+ }
+h1{
+    font-size: 60px;
+    color:#000;
+    font-weight: bold;
+    letter-spacing: 0.26px;
 }
+h2{
+    font-size: 38px;
+    color:#000;
+    font-weight: bold;
+}
+p{
+    font-size: 20px;
+    line-height: 1.6;
+    color: #4A5565;
+    font-weight: 100;
+}
+.primaryButton{
+    background-color: #155DFC;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border: 1px solid #D1D5DC;
+    border-radius: 14px;
+    text-decoration: none;
+}
+.secondaryButton{
+    background-color: white;
+    color: #364153;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border: 1px solid #D1D5DC;
+    border-radius: 14px;
+    text-decoration: none;
+}
+
 nav {
     border-bottom: 1px solid gray;
 }
-footer{
-    border-top: 1px solid gray;
-}
+
 .navigation{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.body{
+    background-color: #F9FAFB;
 }
 .container{
     width: 100%;
     margin: auto;
     padding: 0.2rem 1rem;
 }
+.inner-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+footer{
+     border-top: 1px solid gray;
+ }
 .footer{
     display: flex;
     justify-content: center;
 }
 nav li {
     list-style: none;
-    color: black;
 }
 nav a {
     text-decoration: none;
-}
-nav a:visited{
     color: black;
-}
-nav a:hover {
-    text-decoration: underline;
 }
 
 @media screen and (min-width: 768px) {
