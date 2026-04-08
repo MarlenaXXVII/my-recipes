@@ -1,11 +1,11 @@
 import "./homePage.css";
 import HomePageTile from "../../components/HomePageTile.jsx";
 import allRecipes from "../../assets/alle-recepten-afbeelding.png";
-import weekMenu from "../../assets/groceryList.png";
-import groceryList from "../../assets/myRecipes.png";
-import myRecipes from "../../assets/newRecipe.png";
-import newRecipe from "../../assets/tryThis.png";
-import tryThis from "../../assets/weekMenu.png";
+import weekMenu from "../../assets/weekMenu.png";
+import groceryList from "../../assets/groceryList.png";
+import myRecipes from "../../assets/myRecipes.png";
+import newRecipe from "../../assets/newRecipe.png";
+import tryThis from "../../assets/tryThis.png";
 
 function Homepage() {
     return (
@@ -25,12 +25,12 @@ function Homepage() {
                 </div>
             </div>
             <div className="tile-wrapper">
-                <HomePageTile imageSrc={allRecipes} imageAlt="link naar alle recepten" title="Alle recepten" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
-                <HomePageTile imageSrc={weekMenu} imageAlt="link naar alle recepten" title="Alle recepten" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
-                <HomePageTile imageSrc={groceryList} imageAlt="link naar alle recepten" title="Alle recepten" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
-                <HomePageTile imageSrc={myRecipes} imageAlt="link naar alle recepten" title="Alle recepten" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
-                <HomePageTile imageSrc={newRecipe} imageAlt="link naar alle recepten" title="Alle recepten" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
-                <HomePageTile imageSrc={tryThis} imageAlt="link naar alle recepten" title="Alle recepten" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
+                <HomePageTile imageSrc={allRecipes} imageLinkTo="alle-recepten" imageAlt="link naar alle recepten" title="Alle recepten" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
+                <HomePageTile imageSrc={weekMenu} imageLinkTo="weekmenu" imageAlt="link naar alle recepten" title="Weekmenu" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
+                <HomePageTile imageSrc={groceryList} imageLinkTo="boodschappenlijst" imageAlt="link naar alle recepten" title="Boodschappenlijst" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
+                <HomePageTile imageSrc={myRecipes} imageLinkTo="mijn-recepten" imageAlt="link naar alle recepten" title="Mijn recepten" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
+                <HomePageTile imageSrc={newRecipe} imageLinkTo="nieuw-recept" imageAlt="link naar alle recepten" title="Nieuw recept" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
+                <HomePageTile imageSrc={tryThis} imageLinkTo="random-link" imageAlt="link naar alle recepten" title="Probeer ook eens" subtitle="Bekijk en zoek door alle beschikbare recepten."/>
             </div>
         </>
     )

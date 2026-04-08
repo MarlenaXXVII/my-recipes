@@ -1,5 +1,5 @@
 .home-page-tile{
-    background-color: beige;
+    background-color: #fff;
     max-width: 390px;
     border-radius: 15px;
     padding: 24px;
@@ -9,8 +9,17 @@
     max-width: 48px;
     padding-bottom: 16px;
 }
+.home-page-tile a{
+    text-decoration: none;
+}
 .home-page-tile h3{
     padding-bottom: 8px;
+    text-decoration: none;
+    color: black;
+}
+.home-page-title p{
+    text-decoration: none;
+    color: black;
 }
 .tile-wrapper{
     display: flex;

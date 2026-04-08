@@ -2,6 +2,7 @@ import { useState } from 'react'
 import appLogo from './assets/appLogo.svg'
 import {Routes, Route, Link, NavLink} from 'react-router-dom';
 import Homepage from './pages/homePage/homePage.jsx';
+import NewRecipe from './pages/newRecipe/newRecipe.jsx';
 import './App.css'
 
 function App() {
@@ -24,13 +25,16 @@ function App() {
                 <NavLink to="login" className="primaryButton">Inloggen</NavLink>
             </div>
         </nav>
-        <div className="container">
-            <Routes>
-                <Route path="/" element={<Homepage />}/>
-                <Route path="/recepten" element={<p>recepten</p>}/>
-                <Route path="/login" element={<p>Inloggen</p>}/>
-                <Route path="*" element={<p>*</p>}/>
-            </Routes>
+        <div className="body">
+            <div className="container">
+                <Routes>
+                    <Route path="/" element={<Homepage />}/>
+                    <Route path="/recepten" element={<p>recepten</p>}/>
+                    <Route path="/nieuw-recept" element={<NewRecipe />}/>
+                    <Route path="/login" element={<p>Inloggen</p>}/>
+                    <Route path="*" element={<p>*</p>}/>
+                </Routes>
+            </div>
         </div>
         <footer>
             <div className="footer container">@2026 Recepten app</div>
