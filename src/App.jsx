@@ -1,13 +1,12 @@
-import { useState } from 'react'
 import appLogo from './assets/appLogo.svg'
 import {Routes, Route, Link, NavLink} from 'react-router-dom';
 import Homepage from './pages/homePage/homePage.jsx';
 import NewRecipe from './pages/newRecipe/newRecipe.jsx';
+import AllRecipe from './pages/recipeOverview/recipeOverview.jsx';
+import RecipeDetail from './pages/recipeDetail/recipeDetail.jsx';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
         <nav>
@@ -29,7 +28,8 @@ function App() {
             <div className="container">
                 <Routes>
                     <Route path="/" element={<Homepage />}/>
-                    <Route path="/recepten" element={<p>recepten</p>}/>
+                    <Route path="/alle-recepten" element={<AllRecipe />}/>
+                    <Route path="/recept/:id" element={<RecipeDetail />}/>
                     <Route path="/nieuw-recept" element={<NewRecipe />}/>
                     <Route path="/login" element={<p>Inloggen</p>}/>
                     <Route path="*" element={<p>*</p>}/>
