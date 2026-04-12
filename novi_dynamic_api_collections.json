@@ -1,0 +1,944 @@
+{
+  "collections": [
+    {
+      "name": "profiles",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "userId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "username",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "admin",
+          "user"
+        ],
+        "POST": [
+          "admin",
+          "user"
+        ],
+        "PUT": [
+          "admin",
+          "user"
+        ],
+        "PATCH": [
+          "admin",
+          "user"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      }
+    },
+    {
+      "name": "recipes",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "min": 3,
+          "max": 100
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "min": 10,
+          "max": 500
+        },
+        {
+          "name": "instructions",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "image",
+          "type": "image",
+          "required": false
+        },
+        {
+          "name": "servings",
+          "type": "number",
+          "required": true,
+          "min": 1
+        },
+        {
+          "name": "prepTimeMinutes",
+          "type": "number",
+          "required": true,
+          "min": 1
+        },
+        {
+          "name": "difficulty",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "calories",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "protein",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "carbs",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "fat",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "ownerProfileId",
+          "type": "reference:profiles",
+          "required": true
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "anonymous",
+          "admin",
+          "user"
+        ],
+        "POST": [
+          "admin",
+          "user"
+        ],
+        "PUT": [
+          "admin",
+          "user"
+        ],
+        "PATCH": [
+          "admin",
+          "user"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      }
+    },
+    {
+      "name": "ingredients",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "unit",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "anonymous",
+          "user",
+          "admin"
+        ],
+        "POST": [
+          "admin"
+        ],
+        "PUT": [
+          "admin"
+        ],
+        "PATCH": [
+          "admin"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      }
+    },
+    {
+      "name": "categories",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "anonymous",
+          "user",
+          "admin"
+        ],
+        "POST": [
+          "admin"
+        ],
+        "PUT": [
+          "admin"
+        ],
+        "PATCH": [
+          "admin"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      }
+    },
+    {
+      "name": "recipe_ingredients",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "recipeId",
+          "type": "reference:recipes",
+          "required": true
+        },
+        {
+          "name": "ingredientId",
+          "type": "reference:ingredients",
+          "required": true
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "notes",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "admin",
+          "user"
+        ],
+        "POST": [
+          "admin",
+          "user"
+        ],
+        "PUT": [
+          "admin",
+          "user"
+        ],
+        "PATCH": [
+          "admin",
+          "user"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      }
+    },
+    {
+      "name": "recipe_categories",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "recipeId",
+          "type": "reference:recipes",
+          "required": true
+        },
+        {
+          "name": "categoryId",
+          "type": "reference:categories",
+          "required": true
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "admin",
+          "user"
+        ],
+        "POST": [
+          "admin",
+          "user"
+        ],
+        "PUT": [
+          "admin",
+          "user"
+        ],
+        "PATCH": [
+          "admin",
+          "user"
+        ],
+        "DELETE": [
+          "admin"
+        ]
+      }
+    },
+    {
+      "name": "weekmenu_items",
+      "fields": [
+        {
+          "name": "id",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "profileId",
+          "type": "reference:profiles",
+          "required": true
+        },
+        {
+          "name": "recipeId",
+          "type": "reference:recipes",
+          "required": true
+        },
+        {
+          "name": "day",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "mealType",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "required": true
+        }
+      ],
+      "permissions": {
+        "GET": [
+          "admin",
+          "user"
+        ],
+        "POST": [
+          "admin",
+          "user"
+        ],
+        "PUT": [
+          "admin",
+          "user"
+        ],
+        "PATCH": [
+          "admin",
+          "user"
+        ],
+        "DELETE": [
+          "admin",
+          "user"
+        ]
+      }
+    }
+  ],
+  "users": [
+    {
+      "id" : 1,
+      "email": "admin@voorbeeld.nl",
+      "password": "admin123",
+      "roles": [
+        "admin"
+      ]
+    },
+    {
+      "id" : 2,
+      "email": "gebruiker@voorbeeld.nl",
+      "password": "gebruiker123",
+      "roles": [
+        "user"
+      ]
+    }
+  ],
+  "data": {
+    "profiles": [
+      { "id": 1, "userId": "u_admin_001", "username": "adminchef", "role": "admin" },
+      { "id": 2, "userId": "u_user_001", "username": "sannekookt", "role": "user" },
+      { "id": 3, "userId": "u_user_002", "username": "milanmealprep", "role": "user" },
+      { "id": 4, "userId": "u_user_003", "username": "noorfitfood", "role": "user" }
+    ],
+    "recipes": [
+      {
+        "id": 1,
+        "title": "Spaghetti Bolognese",
+        "description": "Een klassieke pasta met rijke tomatensaus, rundergehakt en Italiaanse kruiden.",
+        "instructions": "Kook de spaghetti volgens de verpakking. Verhit olie in een pan en fruit ui en knoflook. Voeg rundergehakt toe en bak rul. Doe tomatenblokjes, tomatenpuree en Italiaanse kruiden erbij en laat 20 minuten zacht koken. Breng op smaak met zout en peper. Serveer de saus over de spaghetti.",
+        "category": 1,
+        "servings": 4,
+        "prepTimeMinutes": 35,
+        "difficulty": "medium",
+        "calories": 620,
+        "protein": 29,
+        "carbs": 68,
+        "fat": 22,
+        "ownerProfileId": 2
+      },
+      {
+        "id": 2,
+        "title": "Kip Caesar Salade",
+        "description": "Frisse salade met gegrilde kip, romaine sla, croutons en een romige dressing.",
+        "instructions": "Kruid de kip met zout en peper en bak goudbruin. Snijd de romaine sla en doe in een kom. Meng yoghurt, citroensap, knoflook en mosterd tot dressing. Snijd de kip in plakjes. Meng sla met dressing, voeg croutons en Parmezaanse kaas toe en leg de kip erop.",
+        "category": 2,
+        "servings": 2,
+        "prepTimeMinutes": 20,
+        "difficulty": "easy",
+        "calories": 430,
+        "protein": 35,
+        "carbs": 18,
+        "fat": 24,
+        "ownerProfileId": 4
+      },
+      {
+        "id": 3,
+        "title": "Groene Curry met Kip",
+        "description": "Romige Thaise curry met kip, paprika, courgette en jasmijnrijst.",
+        "instructions": "Kook de rijst volgens de verpakking. Bak ui en knoflook in olie. Voeg kipblokjes toe en bak rondom gaar. Roer currypasta erdoor en voeg kokosmelk toe. Doe paprika en courgette erbij en laat 10 minuten sudderen. Serveer met de rijst.",
+        "category": 3,
+        "servings": 4,
+        "prepTimeMinutes": 30,
+        "difficulty": "medium",
+        "calories": 560,
+        "protein": 31,
+        "carbs": 45,
+        "fat": 27,
+        "ownerProfileId": 3
+      },
+      {
+        "id": 4,
+        "title": "Pannenkoeken",
+        "description": "Luchtige pannenkoeken die snel te maken zijn voor ontbijt of lunch.",
+        "instructions": "Meng bloem, melk en eieren tot een glad beslag. Verhit een beetje boter in een koekenpan. Giet een dun laagje beslag in de pan en bak de pannenkoek aan beide kanten goudbruin. Herhaal tot het beslag op is.",
+        "category": 4,
+        "servings": 4,
+        "prepTimeMinutes": 25,
+        "difficulty": "easy",
+        "calories": 380,
+        "protein": 12,
+        "carbs": 46,
+        "fat": 15,
+        "ownerProfileId": 2
+      },
+      {
+        "id": 5,
+        "title": "Chili con Carne",
+        "description": "Stevige stoof met gehakt, bonen, tomaat en een licht pittige smaak.",
+        "instructions": "Verhit olie in een pan en fruit ui en knoflook. Voeg gehakt toe en bak rul. Doe paprika, tomatenblokjes, kidneybonen en komijn erbij. Laat 25 minuten zacht koken. Breng op smaak met peper en zout en serveer warm.",
+        "category": 6,
+        "servings": 4,
+        "prepTimeMinutes": 40,
+        "difficulty": "medium",
+        "calories": 540,
+        "protein": 32,
+        "carbs": 34,
+        "fat": 28,
+        "ownerProfileId": 1
+      },
+      {
+        "id": 6,
+        "title": "Tomatensoep",
+        "description": "Eenvoudige en smaakvolle soep van tomaat, ui, knoflook en basilicum.",
+        "instructions": "Fruit ui en knoflook in olie. Voeg tomatenblokjes en bouillon toe en breng aan de kook. Laat 15 minuten zacht koken. Pureer de soep glad met een staafmixer. Roer basilicum erdoor en serveer warm.",
+        "category": 8,
+        "servings": 4,
+        "prepTimeMinutes": 25,
+        "difficulty": "easy",
+        "calories": 180,
+        "protein": 4,
+        "carbs": 18,
+        "fat": 9,
+        "ownerProfileId": 2
+      },
+      {
+        "id": 7,
+        "title": "Omelet met Groenten",
+        "description": "Snelle omelet met ei, paprika, ui en spinazie voor een voedzame maaltijd.",
+        "instructions": "Klop de eieren los met zout en peper. Bak ui en paprika kort in olie. Voeg spinazie toe en laat slinken. Giet de eieren erbij en bak op laag vuur tot de omelet stevig is. Vouw dubbel en serveer direct.",
+        "category": 4,
+        "servings": 2,
+        "prepTimeMinutes": 15,
+        "difficulty": "easy",
+        "calories": 290,
+        "protein": 19,
+        "carbs": 6,
+        "fat": 20,
+        "ownerProfileId": 4
+      },
+      {
+        "id": 8,
+        "title": "Zalm met Rijst en Broccoli",
+        "description": "Gebakken zalmfilet met rijst en broccoli voor een gezonde avondmaaltijd.",
+        "instructions": "Kook de rijst en broccoli apart gaar. Kruid de zalm met zout en peper. Verhit olie in een pan en bak de zalm aan beide kanten gaar. Serveer de zalm met rijst en broccoli en besprenkel eventueel met citroensap.",
+        "category": 9,
+        "servings": 2,
+        "prepTimeMinutes": 25,
+        "difficulty": "easy",
+        "calories": 510,
+        "protein": 34,
+        "carbs": 36,
+        "fat": 24,
+        "ownerProfileId": 3
+      },
+      {
+        "id": 9,
+        "title": "Vegetarische Wraps",
+        "description": "Wraps gevuld met bonen, paprika, mais en frisse yoghurt.",
+        "instructions": "Bak ui en paprika kort in olie. Voeg kidneybonen, mais en kruiden toe en verwarm goed. Vul de wraps met het mengsel en werk af met een lepel yoghurt. Rol op en serveer direct.",
+        "category": 7,
+        "servings": 4,
+        "prepTimeMinutes": 20,
+        "difficulty": "easy",
+        "calories": 420,
+        "protein": 14,
+        "carbs": 52,
+        "fat": 15,
+        "ownerProfileId": 2
+      },
+      {
+        "id": 10,
+        "title": "Aardappelgratin",
+        "description": "Romige ovenschotel met dunne aardappelplakjes, room en geraspte kaas.",
+        "instructions": "Verwarm de oven voor op 190 graden. Snijd aardappels in dunne plakjes. Meng room met knoflook, zout en peper. Leg aardappels in een ovenschaal, giet het roommengsel erover en bestrooi met kaas. Bak 45 minuten tot goudbruin en gaar.",
+        "category": 14,
+        "servings": 4,
+        "prepTimeMinutes": 60,
+        "difficulty": "medium",
+        "calories": 470,
+        "protein": 13,
+        "carbs": 36,
+        "fat": 30,
+        "ownerProfileId": 1
+      },
+      {
+        "id": 11,
+        "title": "Griekse Salade",
+        "description": "Knapperige salade met tomaat, komkommer, rode ui, feta en olijven.",
+        "instructions": "Snijd tomaat, komkommer en rode ui in stukken. Doe alles in een kom. Verkruimel feta erover en voeg olijven toe. Meng met olijfolie, peper en eventueel wat citroensap.",
+        "category": 2,
+        "servings": 2,
+        "prepTimeMinutes": 10,
+        "difficulty": "easy",
+        "calories": 260,
+        "protein": 8,
+        "carbs": 10,
+        "fat": 20,
+        "ownerProfileId": 4
+      },
+      {
+        "id": 12,
+        "title": "Kip Teriyaki",
+        "description": "Malse kip in een zoet-hartige saus met rijst en groenten.",
+        "instructions": "Kook de rijst volgens de verpakking. Bak ui en kip in olie tot de kip gaar is. Voeg sojasaus, honing en een beetje water toe en laat inkoken tot een glanzende saus. Voeg broccoli toe en verwarm kort mee. Serveer met rijst.",
+        "category": 3,
+        "servings": 4,
+        "prepTimeMinutes": 30,
+        "difficulty": "medium",
+        "calories": 530,
+        "protein": 33,
+        "carbs": 49,
+        "fat": 19,
+        "ownerProfileId": 3
+      },
+      {
+        "id": 13,
+        "title": "Linzensoep",
+        "description": "Vullende soep met rode linzen, wortel, ui en zachte kruiden.",
+        "instructions": "Fruit ui en knoflook in olie. Voeg wortel, linzen en bouillon toe. Laat 25 minuten koken tot de linzen zacht zijn. Pureer eventueel deels voor een romigere structuur. Breng op smaak met peper en zout.",
+        "category": 8,
+        "servings": 4,
+        "prepTimeMinutes": 35,
+        "difficulty": "easy",
+        "calories": 290,
+        "protein": 15,
+        "carbs": 36,
+        "fat": 8,
+        "ownerProfileId": 2
+      },
+      {
+        "id": 14,
+        "title": "Pasta Pesto met Mozzarella",
+        "description": "Snelle pasta met groene pesto, cherrytomaten en romige mozzarella.",
+        "instructions": "Kook de pasta volgens de verpakking. Halveer de tomaten en scheur de mozzarella in stukken. Meng de warme pasta met pesto. Voeg tomaten en mozzarella toe en roer voorzichtig door. Serveer direct.",
+        "category": 1,
+        "servings": 3,
+        "prepTimeMinutes": 20,
+        "difficulty": "easy",
+        "calories": 590,
+        "protein": 18,
+        "carbs": 56,
+        "fat": 31,
+        "ownerProfileId": 4
+      },
+      {
+        "id": 15,
+        "title": "Burrito Bowl",
+        "description": "Kom met rijst, kip, bonen, mais en frisse toppings in Mexicaanse stijl.",
+        "instructions": "Kook de rijst. Bak de kip met komijn en peper gaar in olie. Verwarm kidneybonen en mais kort mee. Verdeel rijst over kommen en schep kip, bonen en mais erop. Werk af met yoghurt of avocado als topping.",
+        "category": 13,
+        "servings": 4,
+        "prepTimeMinutes": 30,
+        "difficulty": "easy",
+        "calories": 610,
+        "protein": 36,
+        "carbs": 58,
+        "fat": 21,
+        "ownerProfileId": 3
+      },
+      {
+        "id": 16,
+        "title": "Shakshuka",
+        "description": "Eieren gepocheerd in een kruidige tomatensaus met paprika en ui.",
+        "instructions": "Fruit ui en paprika in olie. Voeg knoflook en tomatenblokjes toe en laat 10 minuten sudderen. Maak kuiltjes in de saus en breek de eieren erin. Dek af en laat garen tot het eiwit stevig is. Serveer warm met brood.",
+        "category": 7,
+        "servings": 3,
+        "prepTimeMinutes": 25,
+        "difficulty": "medium",
+        "calories": 340,
+        "protein": 17,
+        "carbs": 16,
+        "fat": 21,
+        "ownerProfileId": 1
+      },
+      {
+        "id": 17,
+        "title": "Roerbaknoedels met Groenten",
+        "description": "Snelle roerbak met noedels, broccoli, paprika en een hartige saus.",
+        "instructions": "Kook de noedels kort volgens de verpakking. Verhit olie in een wok en bak ui, paprika en broccoli beetgaar. Voeg noedels en sojasaus toe en roerbak nog 2 minuten. Serveer direct.",
+        "category": 3,
+        "servings": 4,
+        "prepTimeMinutes": 20,
+        "difficulty": "easy",
+        "calories": 450,
+        "protein": 11,
+        "carbs": 63,
+        "fat": 14,
+        "ownerProfileId": 2
+      },
+      {
+        "id": 18,
+        "title": "Tuna Melt Sandwich",
+        "description": "Warme sandwich met tonijnsalade en gesmolten kaas voor lunch of snack.",
+        "instructions": "Meng tonijn met yoghurt, peper en fijngehakte ui. Verdeel over sneetjes brood en bestrooi met geraspte kaas. Bak in een grillpan of oven tot de kaas gesmolten is en het brood krokant wordt.",
+        "category": 5,
+        "servings": 2,
+        "prepTimeMinutes": 15,
+        "difficulty": "easy",
+        "calories": 410,
+        "protein": 27,
+        "carbs": 28,
+        "fat": 19,
+        "ownerProfileId": 4
+      },
+      {
+        "id": 19,
+        "title": "Pompoensoep",
+        "description": "Zachte herfstsoep van pompoen, ui en wortel met een licht romige smaak.",
+        "instructions": "Bak ui kort in olie. Voeg pompoen, wortel en bouillon toe en kook tot alles zacht is. Pureer de soep glad met een staafmixer. Breng op smaak met peper en eventueel een scheutje room.",
+        "category": 8,
+        "servings": 4,
+        "prepTimeMinutes": 35,
+        "difficulty": "easy",
+        "calories": 210,
+        "protein": 4,
+        "carbs": 24,
+        "fat": 10,
+        "ownerProfileId": 1
+      },
+      {
+        "id": 20,
+        "title": "Kikkererwtencurry",
+        "description": "Vegetarische curry met kikkererwten, tomaat, kokosmelk en rijst.",
+        "instructions": "Kook de rijst volgens de verpakking. Fruit ui en knoflook in olie. Voeg currypasta toe en bak kort mee. Doe kikkererwten, tomatenblokjes en kokosmelk erbij en laat 15 minuten sudderen. Serveer met rijst.",
+        "category": 7,
+        "servings": 4,
+        "prepTimeMinutes": 30,
+        "difficulty": "medium",
+        "calories": 520,
+        "protein": 14,
+        "carbs": 58,
+        "fat": 24,
+        "ownerProfileId": 2
+      }
+    ],
+    "ingredients": [
+      { "id": 1, "name": "spaghetti", "unit": "g" },
+      { "id": 2, "name": "rundergehakt", "unit": "g" },
+      { "id": 3, "name": "ui", "unit": "stuks" },
+      { "id": 4, "name": "knoflook", "unit": "tenen" },
+      { "id": 5, "name": "tomatenblokjes", "unit": "g" },
+      { "id": 6, "name": "tomatenpuree", "unit": "g" },
+      { "id": 7, "name": "olijfolie", "unit": "ml" },
+      { "id": 8, "name": "kipfilet", "unit": "g" },
+      { "id": 9, "name": "romaine sla", "unit": "g" },
+      { "id": 10, "name": "croutons", "unit": "g" },
+      { "id": 11, "name": "Parmezaanse kaas", "unit": "g" },
+      { "id": 12, "name": "Griekse yoghurt", "unit": "g" },
+      { "id": 13, "name": "citroen", "unit": "stuks" },
+      { "id": 14, "name": "mosterd", "unit": "g" },
+      { "id": 15, "name": "jasmijnrijst", "unit": "g" },
+      { "id": 16, "name": "groene currypasta", "unit": "g" },
+      { "id": 17, "name": "kokosmelk", "unit": "ml" },
+      { "id": 18, "name": "paprika", "unit": "stuks" },
+      { "id": 19, "name": "courgette", "unit": "stuks" },
+      { "id": 20, "name": "bloem", "unit": "g" },
+      { "id": 21, "name": "melk", "unit": "ml" },
+      { "id": 22, "name": "ei", "unit": "stuks" },
+      { "id": 23, "name": "boter", "unit": "g" },
+      { "id": 24, "name": "kidneybonen", "unit": "g" },
+      { "id": 25, "name": "komijn", "unit": "g" },
+      { "id": 26, "name": "groentebouillon", "unit": "ml" },
+      { "id": 27, "name": "basilicum", "unit": "g" },
+      { "id": 28, "name": "spinazie", "unit": "g" },
+      { "id": 29, "name": "zalmfilet", "unit": "g" },
+      { "id": 30, "name": "broccoli", "unit": "g" },
+      { "id": 31, "name": "wraps", "unit": "stuks" },
+      { "id": 32, "name": "mais", "unit": "g" },
+      { "id": 33, "name": "aardappels", "unit": "g" },
+      { "id": 34, "name": "room", "unit": "ml" },
+      { "id": 35, "name": "geraspte kaas", "unit": "g" },
+      { "id": 36, "name": "komkommer", "unit": "stuks" },
+      { "id": 37, "name": "rode ui", "unit": "stuks" },
+      { "id": 38, "name": "feta", "unit": "g" },
+      { "id": 39, "name": "olijven", "unit": "g" },
+      { "id": 40, "name": "sojasaus", "unit": "ml" },
+      { "id": 41, "name": "honing", "unit": "g" },
+      { "id": 42, "name": "rode linzen", "unit": "g" },
+      { "id": 43, "name": "wortel", "unit": "g" },
+      { "id": 44, "name": "pasta", "unit": "g" },
+      { "id": 45, "name": "pesto", "unit": "g" },
+      { "id": 46, "name": "cherrytomaten", "unit": "g" },
+      { "id": 47, "name": "mozzarella", "unit": "g" },
+      { "id": 48, "name": "avocado", "unit": "stuks" },
+      { "id": 49, "name": "noedels", "unit": "g" },
+      { "id": 50, "name": "tonijn uit blik", "unit": "g" },
+      { "id": 51, "name": "brood", "unit": "sneetjes" },
+      { "id": 52, "name": "pompoen", "unit": "g" },
+      { "id": 53, "name": "kikkererwten", "unit": "g" }
+    ],
+    "categories": [
+      { "id": 1, "name": "Pasta" },
+      { "id": 2, "name": "Salade" },
+      { "id": 3, "name": "Aziatisch" },
+      { "id": 4, "name": "Ontbijt" },
+      { "id": 5, "name": "Lunch" },
+      { "id": 6, "name": "Diner" },
+      { "id": 7, "name": "Vegetarisch" },
+      { "id": 8, "name": "Soep" },
+      { "id": 9, "name": "Vis" },
+      { "id": 10, "name": "Kip" },
+      { "id": 11, "name": "Snel" },
+      { "id": 12, "name": "Gezond" },
+      { "id": 13, "name": "Mexicaans" },
+      { "id": 14, "name": "Ovenschotel" }
+    ],
+    "recipe_ingredients": [
+      { "id": 1, "recipeId": 1, "ingredientId": 1, "amount": 320, "notes": "ongekookt" },
+      { "id": 2, "recipeId": 1, "ingredientId": 2, "amount": 300, "notes": null },
+      { "id": 3, "recipeId": 1, "ingredientId": 3, "amount": 1, "notes": "gesnipperd" },
+      { "id": 4, "recipeId": 1, "ingredientId": 4, "amount": 2, "notes": "fijngehakt" },
+      { "id": 5, "recipeId": 1, "ingredientId": 5, "amount": 400, "notes": null },
+      { "id": 6, "recipeId": 1, "ingredientId": 6, "amount": 70, "notes": null },
+      { "id": 7, "recipeId": 1, "ingredientId": 7, "amount": 15, "notes": null },
+
+      { "id": 8, "recipeId": 2, "ingredientId": 8, "amount": 250, "notes": "in filet of blokjes" },
+      { "id": 9, "recipeId": 2, "ingredientId": 9, "amount": 200, "notes": null },
+      { "id": 10, "recipeId": 2, "ingredientId": 10, "amount": 50, "notes": null },
+      { "id": 11, "recipeId": 2, "ingredientId": 11, "amount": 30, "notes": "geraspt" },
+      { "id": 12, "recipeId": 2, "ingredientId": 12, "amount": 80, "notes": "voor dressing" },
+      { "id": 13, "recipeId": 2, "ingredientId": 13, "amount": 1, "notes": "sap" },
+      { "id": 14, "recipeId": 2, "ingredientId": 14, "amount": 10, "notes": null },
+
+      { "id": 15, "recipeId": 3, "ingredientId": 8, "amount": 300, "notes": "in blokjes" },
+      { "id": 16, "recipeId": 3, "ingredientId": 15, "amount": 250, "notes": null },
+      { "id": 17, "recipeId": 3, "ingredientId": 16, "amount": 40, "notes": null },
+      { "id": 18, "recipeId": 3, "ingredientId": 17, "amount": 400, "notes": null },
+      { "id": 19, "recipeId": 3, "ingredientId": 18, "amount": 1, "notes": "in reepjes" },
+      { "id": 20, "recipeId": 3, "ingredientId": 19, "amount": 1, "notes": "in halve plakjes" },
+
+      { "id": 21, "recipeId": 4, "ingredientId": 20, "amount": 250, "notes": null },
+      { "id": 22, "recipeId": 4, "ingredientId": 21, "amount": 500, "notes": null },
+      { "id": 23, "recipeId": 4, "ingredientId": 22, "amount": 3, "notes": null },
+      { "id": 24, "recipeId": 4, "ingredientId": 23, "amount": 30, "notes": "om in te bakken" },
+
+      { "id": 25, "recipeId": 5, "ingredientId": 2, "amount": 350, "notes": null },
+      { "id": 26, "recipeId": 5, "ingredientId": 3, "amount": 1, "notes": null },
+      { "id": 27, "recipeId": 5, "ingredientId": 4, "amount": 2, "notes": null },
+      { "id": 28, "recipeId": 5, "ingredientId": 18, "amount": 1, "notes": null },
+      { "id": 29, "recipeId": 5, "ingredientId": 5, "amount": 400, "notes": null },
+      { "id": 30, "recipeId": 5, "ingredientId": 24, "amount": 240, "notes": "uitgelekt" },
+      { "id": 31, "recipeId": 5, "ingredientId": 25, "amount": 5, "notes": null },
+
+      { "id": 32, "recipeId": 6, "ingredientId": 3, "amount": 1, "notes": null },
+      { "id": 33, "recipeId": 6, "ingredientId": 4, "amount": 2, "notes": null },
+      { "id": 34, "recipeId": 6, "ingredientId": 5, "amount": 800, "notes": null },
+      { "id": 35, "recipeId": 6, "ingredientId": 26, "amount": 700, "notes": null },
+      { "id": 36, "recipeId": 6, "ingredientId": 27, "amount": 10, "notes": "vers of gedroogd" },
+
+      { "id": 37, "recipeId": 7, "ingredientId": 22, "amount": 4, "notes": null },
+      { "id": 38, "recipeId": 7, "ingredientId": 18, "amount": 1, "notes": null },
+      { "id": 39, "recipeId": 7, "ingredientId": 3, "amount": 1, "notes": null },
+      { "id": 40, "recipeId": 7, "ingredientId": 28, "amount": 100, "notes": null },
+
+      { "id": 41, "recipeId": 8, "ingredientId": 29, "amount": 250, "notes": "2 filets" },
+      { "id": 42, "recipeId": 8, "ingredientId": 15, "amount": 150, "notes": null },
+      { "id": 43, "recipeId": 8, "ingredientId": 30, "amount": 300, "notes": null },
+      { "id": 44, "recipeId": 8, "ingredientId": 13, "amount": 1, "notes": "optioneel uitknijpen" },
+
+      { "id": 45, "recipeId": 9, "ingredientId": 31, "amount": 4, "notes": null },
+      { "id": 46, "recipeId": 9, "ingredientId": 24, "amount": 240, "notes": null },
+      { "id": 47, "recipeId": 9, "ingredientId": 32, "amount": 150, "notes": null },
+      { "id": 48, "recipeId": 9, "ingredientId": 18, "amount": 1, "notes": null },
+      { "id": 49, "recipeId": 9, "ingredientId": 12, "amount": 80, "notes": "als topping" },
+
+      { "id": 50, "recipeId": 10, "ingredientId": 33, "amount": 900, "notes": "geschild" },
+      { "id": 51, "recipeId": 10, "ingredientId": 34, "amount": 250, "notes": null },
+      { "id": 52, "recipeId": 10, "ingredientId": 35, "amount": 120, "notes": null },
+      { "id": 53, "recipeId": 10, "ingredientId": 4, "amount": 2, "notes": null },
+
+      { "id": 54, "recipeId": 11, "ingredientId": 46, "amount": 250, "notes": null },
+      { "id": 55, "recipeId": 11, "ingredientId": 36, "amount": 1, "notes": null },
+      { "id": 56, "recipeId": 11, "ingredientId": 37, "amount": 1, "notes": null },
+      { "id": 57, "recipeId": 11, "ingredientId": 38, "amount": 100, "notes": null },
+      { "id": 58, "recipeId": 11, "ingredientId": 39, "amount": 60, "notes": null },
+
+      { "id": 59, "recipeId": 12, "ingredientId": 8, "amount": 300, "notes": null },
+      { "id": 60, "recipeId": 12, "ingredientId": 15, "amount": 250, "notes": null },
+      { "id": 61, "recipeId": 12, "ingredientId": 40, "amount": 60, "notes": null },
+      { "id": 62, "recipeId": 12, "ingredientId": 41, "amount": 20, "notes": null },
+      { "id": 63, "recipeId": 12, "ingredientId": 30, "amount": 250, "notes": null },
+
+      { "id": 64, "recipeId": 13, "ingredientId": 42, "amount": 250, "notes": null },
+      { "id": 65, "recipeId": 13, "ingredientId": 43, "amount": 150, "notes": "in blokjes" },
+      { "id": 66, "recipeId": 13, "ingredientId": 3, "amount": 1, "notes": null },
+      { "id": 67, "recipeId": 13, "ingredientId": 4, "amount": 2, "notes": null },
+      { "id": 68, "recipeId": 13, "ingredientId": 26, "amount": 900, "notes": null },
+
+      { "id": 69, "recipeId": 14, "ingredientId": 44, "amount": 300, "notes": null },
+      { "id": 70, "recipeId": 14, "ingredientId": 45, "amount": 90, "notes": null },
+      { "id": 71, "recipeId": 14, "ingredientId": 46, "amount": 200, "notes": null },
+      { "id": 72, "recipeId": 14, "ingredientId": 47, "amount": 125, "notes": null },
+
+      { "id": 73, "recipeId": 15, "ingredientId": 15, "amount": 250, "notes": null },
+      { "id": 74, "recipeId": 15, "ingredientId": 8, "amount": 300, "notes": null },
+      { "id": 75, "recipeId": 15, "ingredientId": 24, "amount": 240, "notes": null },
+      { "id": 76, "recipeId": 15, "ingredientId": 32, "amount": 150, "notes": null },
+      { "id": 77, "recipeId": 15, "ingredientId": 48, "amount": 1, "notes": "optioneel" },
+
+      { "id": 78, "recipeId": 16, "ingredientId": 22, "amount": 4, "notes": null },
+      { "id": 79, "recipeId": 16, "ingredientId": 5, "amount": 400, "notes": null },
+      { "id": 80, "recipeId": 16, "ingredientId": 18, "amount": 1, "notes": null },
+      { "id": 81, "recipeId": 16, "ingredientId": 3, "amount": 1, "notes": null },
+
+      { "id": 82, "recipeId": 17, "ingredientId": 49, "amount": 250, "notes": null },
+      { "id": 83, "recipeId": 17, "ingredientId": 18, "amount": 1, "notes": null },
+      { "id": 84, "recipeId": 17, "ingredientId": 30, "amount": 200, "notes": null },
+      { "id": 85, "recipeId": 17, "ingredientId": 40, "amount": 40, "notes": null },
+      { "id": 86, "recipeId": 17, "ingredientId": 3, "amount": 1, "notes": null },
+
+      { "id": 87, "recipeId": 18, "ingredientId": 50, "amount": 160, "notes": "uitgelekt" },
+      { "id": 88, "recipeId": 18, "ingredientId": 12, "amount": 40, "notes": "voor mengsel" },
+      { "id": 89, "recipeId": 18, "ingredientId": 37, "amount": 0.5, "notes": "fijngehakt" },
+      { "id": 90, "recipeId": 18, "ingredientId": 51, "amount": 4, "notes": null },
+      { "id": 91, "recipeId": 18, "ingredientId": 35, "amount": 50, "notes": null },
+
+      { "id": 92, "recipeId": 19, "ingredientId": 52, "amount": 700, "notes": "geschild en in blokjes" },
+      { "id": 93, "recipeId": 19, "ingredientId": 43, "amount": 150, "notes": null },
+      { "id": 94, "recipeId": 19, "ingredientId": 3, "amount": 1, "notes": null },
+      { "id": 95, "recipeId": 19, "ingredientId": 26, "amount": 800, "notes": null },
+      { "id": 96, "recipeId": 19, "ingredientId": 34, "amount": 50, "notes": "optioneel" },
+
+      { "id": 97, "recipeId": 20, "ingredientId": 53, "amount": 240, "notes": "uitgelekt" },
+      { "id": 98, "recipeId": 20, "ingredientId": 5, "amount": 400, "notes": null },
+      { "id": 99, "recipeId": 20, "ingredientId": 17, "amount": 300, "notes": null },
+      { "id": 100, "recipeId": 20, "ingredientId": 16, "amount": 35, "notes": null },
+      { "id": 101, "recipeId": 20, "ingredientId": 15, "amount": 250, "notes": null }
+    ],
+    "recipe_categories": [
+      { "id": 1, "recipeId": 1, "categoryId": 1 },
+      { "id": 2, "recipeId": 1, "categoryId": 6 },
+      { "id": 3, "recipeId": 2, "categoryId": 2 },
+      { "id": 4, "recipeId": 2, "categoryId": 10 },
+      { "id": 5, "recipeId": 2, "categoryId": 12 },
+      { "id": 6, "recipeId": 3, "categoryId": 3 },
+      { "id": 7, "recipeId": 3, "categoryId": 10 },
+      { "id": 8, "recipeId": 3, "categoryId": 6 },
+      { "id": 9, "recipeId": 4, "categoryId": 4 },
+      { "id": 10, "recipeId": 4, "categoryId": 5 },
+      { "id": 11, "recipeId": 5, "categoryId": 6 },
+      { "id": 12, "recipeId": 5, "categoryId": 13 },
+      { "id": 13, "recipeId": 6, "categoryId": 8 },
+      { "id": 14, "recipeId": 6, "categoryId": 7 },
+      { "id": 15, "recipeId": 7, "categoryId": 4 },
+      { "id": 16, "recipeId": 7, "categoryId": 12 },
+      { "id": 17, "recipeId": 8, "categoryId": 9 },
+      { "id": 18, "recipeId": 8, "categoryId": 12 },
+      { "id": 19, "recipeId": 9, "categoryId": 7 },
+      { "id": 20, "recipeId": 9, "categoryId": 13 },
+      { "id": 21, "recipeId": 10, "categoryId": 14 },
+      { "id": 22, "recipeId": 10, "categoryId": 6 },
+      { "id": 23, "recipeId": 11, "categoryId": 2 },
+      { "id": 24, "recipeId": 11, "categoryId": 12 },
+      { "id": 25, "recipeId": 12, "categoryId": 3 },
+      { "id": 26, "recipeId": 12, "categoryId": 10 },
+      { "id": 27, "recipeId": 13, "categoryId": 8 },
+      { "id": 28, "recipeId": 13, "categoryId": 7 },
+      { "id": 29, "recipeId": 14, "categoryId": 1 },
+      { "id": 30, "recipeId": 14, "categoryId": 11 },
+      { "id": 31, "recipeId": 15, "categoryId": 13 },
+      { "id": 32, "recipeId": 15, "categoryId": 10 },
+      { "id": 33, "recipeId": 16, "categoryId": 7 },
+      { "id": 34, "recipeId": 16, "categoryId": 6 },
+      { "id": 35, "recipeId": 17, "categoryId": 3 },
+      { "id": 36, "recipeId": 17, "categoryId": 11 },
+      { "id": 37, "recipeId": 18, "categoryId": 5 },
+      { "id": 38, "recipeId": 18, "categoryId": 11 },
+      { "id": 39, "recipeId": 19, "categoryId": 8 },
+      { "id": 40, "recipeId": 19, "categoryId": 7 },
+      { "id": 41, "recipeId": 20, "categoryId": 7 },
+      { "id": 42, "recipeId": 20, "categoryId": 3 }
+    ],
+    "weekmenu_items": [
+      { "id": 1, "profileId": 2, "recipeId": 1, "day": "Monday", "mealType": "dinner", "date": "2026-04-13" },
+      { "id": 2, "profileId": 2, "recipeId": 6, "day": "Tuesday", "mealType": "lunch", "date": "2026-04-14" },
+      { "id": 3, "profileId": 2, "recipeId": 9, "day": "Wednesday", "mealType": "dinner", "date": "2026-04-15" },
+      { "id": 4, "profileId": 3, "recipeId": 12, "day": "Thursday", "mealType": "dinner", "date": "2026-04-16" },
+      { "id": 5, "profileId": 4, "recipeId": 11, "day": "Friday", "mealType": "lunch", "date": "2026-04-17" },
+      { "id": 6, "profileId": 3, "recipeId": 8, "day": "Saturday", "mealType": "dinner", "date": "2026-04-18" },
+      { "id": 7, "profileId": 4, "recipeId": 4, "day": "Sunday", "mealType": "breakfast", "date": "2026-04-19" }
+    ]
+  }
+}
