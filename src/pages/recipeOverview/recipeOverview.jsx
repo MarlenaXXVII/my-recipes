@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 function AllRecipe() {
     const [recipes, setRecipes] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [recipeCategories, setRecipeCategories] = useState([]);
     const [error, setError] = useState("");
 
     const categoryMap = categories.reduce((acc, cat) => {
@@ -13,10 +14,17 @@ function AllRecipe() {
         return acc;
     }, {});
 
+    const recipeCategoryMap = recipeCategories.reduce((acc, item) => {
+        if (!acc[item.recipeId]) {
+            acc[item.recipeId] = item.categoryId;
+        }
+        return acc;
+    }, {});
+
     useEffect(() => {
         async function fetchData() {
             try {
-                const [recipesResponse, categoriesResponse] = await Promise.all([
+                const [recipesResponse, categoriesResponse, recipeCategoriesResponse] = await Promise.all([
                     axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes', {
                         headers: {
                             "novi-education-project-id": '5a1ea178-e581-4983-a200-1089aaa6bb93',
@@ -26,11 +34,17 @@ function AllRecipe() {
                         headers: {
                             "novi-education-project-id": '5a1ea178-e581-4983-a200-1089aaa6bb93',
                         }
+                    }),
+                    axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_categories', {
+                        headers: {
+                            "novi-education-project-id": '5a1ea178-e581-4983-a200-1089aaa6bb93',
+                        }
                     })
                 ]);
 
                 setRecipes(recipesResponse.data);
                 setCategories(categoriesResponse.data);
+                setRecipeCategories(recipeCategoriesResponse.data);
 
             } catch (e) {
                 console.error(e);
@@ -41,9 +55,7 @@ function AllRecipe() {
         fetchData();
     }, []);
 
-
     return (
-
         <main className="recipe-page">
             <section className="recipe-hero container">
                 <div className="recipe-hero-content">
@@ -96,8 +108,8 @@ function AllRecipe() {
                                                 className="recipe-card-image"
                                             />
                                             <span className="recipe-category-badge">
-                                            {categoryMap[recipe.category]}
-                                        </span>
+                                                {categoryMap[recipeCategoryMap[recipe.id]] || "Geen categorie"}
+                                            </span>
                                         </div>
 
                                         <div className="recipe-card-content">

@@ -101,6 +101,58 @@ textarea::placeholder {
     transition: all 0.2s ease;
 }
 /*      TODO: Nadat de categorieen klikbaar zijn nog een state toevoegen aan de css     */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.ingredients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ingredient-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.small-field {
+    flex: 0 0 90px;
+}
+
+.medium-field {
+    flex: 0 0 130px;
+}
+
+.large-field {
+    flex: 1;
+}
+
+.add-ingredient-button {
+    background: none;
+    border: none;
+    color: #2563eb;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.remove-ingredient-button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.remove-ingredient-button:disabled {
+    opacity: 0.5;
+}
 .buttons {
     display: flex;
     justify-content: flex-end;
