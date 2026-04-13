@@ -1,10 +1,11 @@
 import appLogo from './assets/appLogo.svg'
-import {Routes, Route, Link, NavLink} from 'react-router-dom';
+import {Routes, Route, NavLink} from 'react-router-dom';
 import Homepage from './pages/homePage/homePage.jsx';
 import NewRecipe from './pages/newRecipe/newRecipe.jsx';
 import AllRecipe from './pages/recipeOverview/recipeOverview.jsx';
 import RecipeDetail from './pages/recipeDetail/recipeDetail.jsx';
 import './App.css'
+import WeekMenu from "./pages/weekMenu/weekMenu.jsx";
 
 function App() {
   return (
@@ -31,8 +32,9 @@ function App() {
                     <Route path="/alle-recepten" element={<AllRecipe />}/>
                     <Route path="/recept/:id" element={<RecipeDetail />}/>
                     <Route path="/nieuw-recept" element={<NewRecipe />}/>
+                    <Route path="/weekmenu" element={<WeekMenu />}/>
                     <Route path="/login" element={<p>Inloggen</p>}/>
-                    <Route path="*" element={<p>*</p>}/>
+                    <Route path="*" element={<p>404 - Deze pagina bestaat niet</p>}/>
                 </Routes>
             </div>
         </div>
