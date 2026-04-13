@@ -2,6 +2,12 @@ import './weekMenu.css';
 
 function WeekMenu() {
 
+    // TODO: replace dummy data with actual api data
+    // TODO: create modal for adding recipes
+    // TODO: create shopping list according to the recipes of this week
+    // TODO: Delete recipe from day
+    // TODO: Kcal update with every change
+
     const weekData = {
         range: '9 mrt - 15 mrt',
         mealsPlanned: 8,
