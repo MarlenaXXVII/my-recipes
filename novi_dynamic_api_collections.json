@@ -5,8 +5,7 @@
       "fields": [
         { "name": "id", "type": "number", "required": true },
         { "name": "userId", "type": "reference:users", "required": true },
-        { "name": "username", "type": "string", "required": true },
-        { "name": "role", "type": "string", "required": true }
+        { "name": "username", "type": "string", "required": true }
       ],
       "permissions": {
         "GET": ["admin", "user"],
@@ -150,10 +149,10 @@
   ],
   "data": {
     "profiles": [
-      { "id": 1, "userId": 1, "username": "adminchef", "role": "admin" },
-      { "id": 2, "userId": 2, "username": "sannekookt", "role": "user" },
-      { "id": 3, "userId": 3, "username": "milanmealprep", "role": "user" },
-      { "id": 4, "userId": 4, "username": "noorfitfood", "role": "user" }
+      { "id": 1, "userId": 1, "username": "admin" },
+      { "id": 2, "userId": 2, "username": "gebruiker" },
+      { "id": 3, "userId": 3, "username": "milan" },
+      { "id": 4, "userId": 4, "username": "noor" }
     ],
     "recipes": [
       {

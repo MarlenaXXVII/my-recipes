@@ -1,10 +1,36 @@
-import { useState } from 'react';
+import {useState, useEffect, useContext} from 'react';
+import {AuthContext} from "../../context/AuthContext.jsx";
+import axios from 'axios';
 import './newRecipe.css';
 
 
 function NewRecipe() {
     //      TODO: Afbeelding uploaden
     //      TODO: formulier versturen
+
+    const [profileData, setProfileData] = useState({});
+    const { user } = useContext(AuthContext);
+
+    useEffect(() => {
+        async function fetchProfileData() {
+            const token = localStorage.getItem('token');
+
+            try {
+                const result = await axios.get('http://localhost:5173/660/private-content', {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setProfileData(result.data);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        void fetchProfileData();
+    }, [])
+
     const [ingredients, setIngredients] = useState([
         { amount: '', unit: '', name: '', note: '' }
     ]);
