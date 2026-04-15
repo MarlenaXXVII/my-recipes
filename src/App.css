@@ -82,6 +82,21 @@ nav a {
     text-decoration: none;
     color: black;
 }
+.error-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    max-width: max-content;
+    margin: 20px auto;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background-color: #ffebeb;
+    border: 1px solid #ffc9c9;
+    color: #c92a2a;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
 
 @media screen and (min-width: 768px) {
     .navigation{
