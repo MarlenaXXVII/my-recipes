@@ -6,10 +6,14 @@ import {AuthContext} from "./context/AuthContext.jsx";
 import Homepage from './pages/homePage/homePage.jsx';
 import NewRecipe from './pages/newRecipe/newRecipe.jsx';
 import AllRecipe from './pages/recipeOverview/recipeOverview.jsx';
+import WeekMenu from './pages/weekMenu/weekMenu.jsx';
+import GroceryList from './pages/shoppingList/shoppingList.jsx';
 import RecipeDetail from './pages/recipeDetail/recipeDetail.jsx';
 import './App.css'
 
 function App() {
+    // TODO: Add a name to the logged in user in navigation
+
     const { isAuth } = useContext(AuthContext);
 
       return (
@@ -23,10 +27,10 @@ function App() {
                     </div>
                     <ul>
                         <li>
-                            <NavLink to="recepten">Recepten</NavLink>
+                            <NavLink to="alle-recepten">Recepten</NavLink>
                         </li>
                     </ul>
-                    <NavLink to="login" className="primaryButton">Inloggen</NavLink>
+                    {isAuth ? <p>Hallo Gebruiker!</p> : <NavLink to="login" className="primaryButton">Inloggen</NavLink>}
                 </div>
             </nav>
             <div className="body">
@@ -36,14 +40,18 @@ function App() {
                         <Route path="/alle-recepten" element={<AllRecipe />}/>
                         <Route path="/recept/:id" element={<RecipeDetail />}/>
                         <Route path="/nieuw-recept" element={isAuth ? <NewRecipe /> : <Navigate to="/login" state={{ message: "Om een recept aan te maken moet je ingelogd zijn" }}/>} />
-                        <Route path="/mijn-recepten" element={<AllRecipe onlyMine={true} />} />
+                        <Route path="/mijn-recepten" element={isAuth ? <AllRecipe onlyMine={true} /> : <Navigate to="/login" state={{ message: "Log in om je eigen recepten te bekijken" }}/>}/>
+                        <Route path="/boodschappenlijst" element={isAuth ? <GroceryList /> : <Navigate to="/login" state={{ message: "Om een boodschappenlijst aan te maken moet je ingelogd zijn" }}/>} />
+                        <Route path="/weekmenu" element={isAuth ? <WeekMenu /> : <Navigate to="/login" state={{ message: "Om een Weekmenu aan te maken moet je ingelogd zijn" }}/>} />
                         <Route path="/login" element={<Auth />}/>
                         <Route path="*" element={<p>*</p>}/>
                     </Routes>
                 </div>
             </div>
             <footer>
-                <div className="footer container">@2026 Recepten app</div>
+                <div className="container">
+                    <div className="footer container">@2026 Recepten app</div>
+                </div>
             </footer>
         </>
       )
