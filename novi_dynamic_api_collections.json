@@ -49,7 +49,7 @@
       ],
       "permissions": {
         "GET": ["anonymous", "user", "admin"],
-        "POST": ["admin"],
+        "POST": ["admin", "user"],
         "PUT": ["admin"],
         "PATCH": ["admin"],
         "DELETE": ["admin"]
@@ -80,7 +80,7 @@
         { "name": "notes", "type": "string", "required": false }
       ],
       "permissions": {
-        "GET": ["admin", "user"],
+        "GET": ["admin", "user", "anonymous"],
         "POST": ["admin", "user"],
         "PUT": ["admin", "user"],
         "PATCH": ["admin", "user"],

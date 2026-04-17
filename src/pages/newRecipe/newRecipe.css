@@ -101,7 +101,11 @@ textarea::placeholder {
     cursor: pointer;
     transition: all 0.2s ease;
 }
-/*      TODO: Nadat de categorieen klikbaar zijn nog een state toevoegen aan de css     */
+.category.active {
+    background-color: #155DFC;
+    border-color: #155DFC;
+    color: white;
+}
 .section-header {
     display: flex;
     justify-content: space-between;
