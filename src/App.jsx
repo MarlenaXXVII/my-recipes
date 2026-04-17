@@ -1,5 +1,5 @@
 import appLogo from './assets/appLogo.svg'
-import {Routes, Route, Link, NavLink, Navigate} from 'react-router-dom';
+import {Routes, Route, NavLink, Navigate} from 'react-router-dom';
 import Auth from './pages/auth/auth.jsx';
 import {useContext} from "react";
 import {AuthContext} from "./context/AuthContext.jsx";
@@ -36,6 +36,7 @@ function App() {
                         <Route path="/alle-recepten" element={<AllRecipe />}/>
                         <Route path="/recept/:id" element={<RecipeDetail />}/>
                         <Route path="/nieuw-recept" element={isAuth ? <NewRecipe /> : <Navigate to="/login" state={{ message: "Om een recept aan te maken moet je ingelogd zijn" }}/>} />
+                        <Route path="/mijn-recepten" element={<AllRecipe onlyMine={true} />} />
                         <Route path="/login" element={<Auth />}/>
                         <Route path="*" element={<p>*</p>}/>
                     </Routes>

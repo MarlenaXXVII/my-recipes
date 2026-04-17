@@ -1,6 +1,8 @@
 import {useState, useEffect, useContext} from 'react';
 import {AuthContext} from "../../context/AuthContext.jsx";
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from "react-router-dom";
 import './newRecipe.css';
 
 
@@ -10,6 +12,7 @@ function NewRecipe() {
 
     const [profileData, setProfileData] = useState({});
     const { user } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchProfileData() {
@@ -50,10 +53,54 @@ function NewRecipe() {
         setIngredients(updatedIngredients);
     };
 
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            return;
+        }
+
+        const decoded = jwtDecode(token);
+        const form = e.target;
+        const recipeData = {
+            title: form.title.value,
+            description: form.description.value,
+            instructions: form.instructions.value,
+            image: null,
+            servings: Number(form.servings.value),
+            prepTimeMinutes: Number(form.prepTimeMinutes.value),
+            cookTimeMinutes: Number(form.cookTimeMinutes.value),
+            difficulty: form.difficulty.value,
+            calories: Number(form.calories.value),
+            protein: Number(form.protein.value),
+            carbs: Number(form.carbs.value),
+            fat: Number(form.fat.value),
+            ownerProfileId: Number(decoded.userId),
+        };
+
+        try {
+            const response = await axios.post(
+                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes',
+                recipeData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
+                    },
+                }
+            );
+            navigate('/mijn-recepten');
+        } catch (error) {
+            console.error('Fout bij opslaan recept:', error.response?.data || error.message);
+        }
+    }
+
     return (
         <>
             <div className="inner-container">
-                <form className="recipe-form">
+                <form className="recipe-form" onSubmit={handleSubmit}>
                     <h2>Nieuw recept</h2>
 
                     <section className="formSection">
@@ -61,12 +108,12 @@ function NewRecipe() {
 
                         <div className="form-group">
                             <label htmlFor="title">Titel *</label>
-                            <input id="title" type="text" placeholder="Bijv. Spaghetti Bolognese" />
+                            <input id="title" name="title" type="text" placeholder="Bijv. Spaghetti Bolognese" />
                         </div>
 
                         <div className="form-group">
                             <label htmlFor="shortDescription">Beschrijving</label>
-                            <textarea id="shortDescription" placeholder="Korte beschrijving van het gerecht"></textarea>
+                            <textarea id="shortDescription" name="description" placeholder="Korte beschrijving van het gerecht"></textarea>
                         </div>
 
                         <div className="form-group">
@@ -76,28 +123,28 @@ function NewRecipe() {
                                 <span>Klik om een afbeelding te uploaden</span>
                                 <small>Max 5MB</small>
                             </label>
-                            <input id="image" type="file" hidden />
+                            <input id="image" name="image" type="file" hidden />
                         </div>
 
                         <div className="form-row">
                             <div className="form-group">
                                 <label htmlFor="portionAmount">Porties *</label>
-                                <input id="portionAmount" type="text" placeholder="4" />
+                                <input id="portionAmount" name="servings" type="text" placeholder="4" />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="prepTime">Voorbereiden (min)</label>
-                                <input id="prepTime" type="text" placeholder="15" />
+                                <input id="prepTime" name="prepTimeMinutes" type="text" placeholder="15" />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="cookTime">Bereiden (min)</label>
-                                <input id="cookTime" type="text" placeholder="30" />
+                                <input id="cookTime" name="cookTimeMinutes" type="text" placeholder="30" />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="difficulty">Moeilijkheid</label>
-                                <input id="difficulty" type="text" placeholder="Beginner" />
+                                <input id="difficulty" name="difficulty" type="text" placeholder="Beginner" />
                             </div>
                         </div>
                     </section>
@@ -189,22 +236,22 @@ function NewRecipe() {
                         <div className="form-row">
                             <div className="form-group">
                                 <label htmlFor="calories">Calorieën (kcal)</label>
-                                <input id="calories" type="text" placeholder="520" />
+                                <input id="calories" name="calories" type="text" placeholder="520" />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="protein">Eiwitten (g)</label>
-                                <input id="protein" type="text" placeholder="22" />
+                                <input id="protein" name="protein" type="text" placeholder="22" />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="carbs">Koolhydraten (g)</label>
-                                <input id="carbs" type="text" placeholder="58" />
+                                <input id="carbs" name="carbs" type="text" placeholder="58" />
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="fat">Vetten (g)</label>
-                                <input id="fat" type="text" placeholder="21" />
+                                <input id="fat" name="fat" type="text" placeholder="21" />
                             </div>
                         </div>
                     </section>
@@ -214,6 +261,7 @@ function NewRecipe() {
                         <div className="form-group">
                             <textarea
                                 id="preparation"
+                                name="instructions"
                                 placeholder="Beschrijf stap voor stap hoe je het gerecht bereidt.."
                             ></textarea>
                         </div>

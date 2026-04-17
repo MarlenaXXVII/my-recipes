@@ -2,12 +2,16 @@ import './recipeOverview.css';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
-function AllRecipe() {
+function AllRecipe({ onlyMine = false }) {
     const [recipes, setRecipes] = useState([]);
     const [categories, setCategories] = useState([]);
     const [recipeCategories, setRecipeCategories] = useState([]);
     const [error, setError] = useState("");
+    const token = localStorage.getItem('token');
+    const decoded = token ? jwtDecode(token) : null;
+    const userId = decoded?.userId;
 
     const categoryMap = categories.reduce((acc, cat) => {
         acc[cat.id] = cat.name;
@@ -20,6 +24,11 @@ function AllRecipe() {
         }
         return acc;
     }, {});
+
+
+    const filteredRecipes = onlyMine
+        ? recipes.filter(recipe => recipe.ownerProfileId === userId)
+        : recipes;
 
     useEffect(() => {
         async function fetchData() {
@@ -59,8 +68,12 @@ function AllRecipe() {
         <main className="recipe-page">
             <section className="recipe-hero container">
                 <div className="recipe-hero-content">
-                    <h1>Recepten</h1>
-                    <p>Ontdek heerlijke gerechten</p>
+                    <h1>{onlyMine ? "Mijn recepten" : "Recepten"}</h1>
+                    <p>
+                        {onlyMine
+                            ? "Dit zijn jouw recepten"
+                            : "Ontdek heerlijke gerechten"}
+                    </p>
 
                     <div className="search-bar-wrapper">
                         <input
@@ -98,7 +111,7 @@ function AllRecipe() {
                 {recipes.length > 0 && (
                     <>
                         <div className="recipe-grid">
-                            {recipes.map((recipe) => (
+                            {filteredRecipes.map((recipe) => (
                                 <article className="recipe-card" key={recipe.id}>
                                     <Link to={`/recept/${recipe.id}`} className="recipe-card-link">
                                         <div className="recipe-card-image-wrapper">
