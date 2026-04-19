@@ -1,6 +1,7 @@
 import './weekMenu.css';
 import RecipeModal from '../../components/RecipeModal.jsx';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
@@ -17,6 +18,9 @@ function WeekMenuPage() {
     const [categories, setCategories] = useState([]);
     const [recipeCategories, setRecipeCategories] = useState([]);
     const [isSaving, setIsSaving] = useState(false);
+    const [ingredients, setIngredients] = useState([]);
+    const [recipeIngredients, setRecipeIngredients] = useState([]);
+    const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
     const decoded = token ? jwtDecode(token) : null;
@@ -96,7 +100,14 @@ function WeekMenuPage() {
         }
 
         try {
-            const [weekmenuResponse, recipesResponse, categoriesResponse, recipeCategoriesResponse] = await Promise.all([
+            const [
+                weekmenuResponse,
+                recipesResponse,
+                categoriesResponse,
+                recipeCategoriesResponse,
+                ingredientsResponse,
+                recipeIngredientsResponse,
+            ] = await Promise.all([
                 axios.get(
                     `https://novi-backend-api-wgsgz.ondigitalocean.app/api/profiles/${userId}/weekmenu_items`,
                     {
@@ -130,12 +141,30 @@ function WeekMenuPage() {
                         },
                     }
                 ),
+                axios.get(
+                    'https://novi-backend-api-wgsgz.ondigitalocean.app/api/ingredients',
+                    {
+                        headers: {
+                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
+                        },
+                    }
+                ),
+                axios.get(
+                    'https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_ingredients',
+                    {
+                        headers: {
+                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
+                        },
+                    }
+                ),
             ]);
 
             setWeekmenuItems(weekmenuResponse.data);
             setRecipes(recipesResponse.data);
             setCategories(categoriesResponse.data);
             setRecipeCategories(recipeCategoriesResponse.data);
+            setIngredients(ingredientsResponse.data);
+            setRecipeIngredients(recipeIngredientsResponse.data);
         } catch (error) {
             console.error('Fout bij ophalen van weekmenu data:', error);
         } finally {
@@ -275,6 +304,63 @@ function WeekMenuPage() {
             </main>
         );
     }
+    function normalizeText(text) {
+        return text.trim().toLowerCase();
+    }
+
+    function generateShoppingListForCurrentWeek(weekDays, recipeIngredients, ingredients) {
+        const ingredientMap = {};
+
+        for (const day of weekDays) {
+            for (const meal of day.meals) {
+                const recipeIngredientRows = recipeIngredients.filter(
+                    (row) => Number(row.recipeId) === Number(meal.recipeId)
+                );
+
+                for (const row of recipeIngredientRows) {
+                    const ingredient = ingredients.find(
+                        (item) => Number(item.id) === Number(row.ingredientId)
+                    );
+
+                    if (!ingredient) continue;
+
+                    const ingredientName = ingredient.name;
+                    const normalizedName = normalizeText(ingredientName);
+                    const unit = row.unit || '';
+                    const key = `${normalizedName}-${unit}`;
+
+                    if (!ingredientMap[key]) {
+                        ingredientMap[key] = {
+                            name: ingredientName,
+                            amount: Number(row.amount) || 0,
+                            unit: unit,
+                            notes: row.notes || '',
+                        };
+                    } else {
+                        ingredientMap[key].amount += Number(row.amount) || 0;
+                    }
+                }
+            }
+        }
+
+        return Object.values(ingredientMap).sort((a, b) =>
+            a.name.localeCompare(b.name, 'nl-NL')
+        );
+    }
+    function handleGenerateShoppingList() {
+        const generatedList = generateShoppingListForCurrentWeek(
+            weekDays,
+            recipeIngredients,
+            ingredients
+        );
+
+        navigate('/boodschappenlijst', {
+            state: {
+                shoppingList: generatedList,
+                weekRange: weekRange,
+            },
+        });
+    }
 
     return (
         <main className="weekmenu-page">
@@ -282,7 +368,7 @@ function WeekMenuPage() {
                 <div className="weekmenu-topbar">
                     <h1>Weekmenu</h1>
 
-                    <button className="primaryButton" type="button">
+                    <button className="primaryButton" type="button" onClick={handleGenerateShoppingList}>
                         <span>Maak boodschappenlijst</span>
                     </button>
                 </div>
