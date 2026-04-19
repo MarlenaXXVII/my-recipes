@@ -36,8 +36,7 @@ function AuthContextProvider( { children } ) {
     const navigate = useNavigate();
 
     function login(userDetails) {
-        console.log(userDetails);
-        console.log('Gebruiker is ingelogd!');
+        // console.log(userDetails);
 
         localStorage.setItem('token', userDetails.token);
 
@@ -53,7 +52,7 @@ function AuthContextProvider( { children } ) {
             status: 'done',
         });
 
-        navigate('/nieuw-recept');
+        navigate('/');
     }
 
     function logout() {

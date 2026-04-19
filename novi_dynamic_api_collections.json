@@ -109,7 +109,6 @@
         { "name": "profileId", "type": "reference:profiles", "required": true },
         { "name": "recipeId", "type": "reference:recipes", "required": true },
         { "name": "day", "type": "string", "required": true },
-        { "name": "mealType", "type": "string", "required": true },
         { "name": "date", "type": "date", "required": true }
       ],
       "permissions": {

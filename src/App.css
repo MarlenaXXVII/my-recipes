@@ -35,6 +35,10 @@ p{
     border-radius: 14px;
     text-decoration: none;
 }
+.primaryButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.26);
+}
 .secondaryButton{
     background-color: white;
     color: #364153;
