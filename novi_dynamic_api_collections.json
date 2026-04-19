@@ -693,13 +693,13 @@
       { "id": 42, "recipeId": 20, "categoryId": 3 }
     ],
     "weekmenu_items": [
-      { "id": 1, "profileId": 2, "recipeId": 1, "day": "Monday", "mealType": "dinner", "date": "2026-04-13" },
-      { "id": 2, "profileId": 2, "recipeId": 6, "day": "Tuesday", "mealType": "lunch", "date": "2026-04-14" },
-      { "id": 3, "profileId": 2, "recipeId": 9, "day": "Wednesday", "mealType": "dinner", "date": "2026-04-15" },
-      { "id": 4, "profileId": 3, "recipeId": 12, "day": "Thursday", "mealType": "dinner", "date": "2026-04-16" },
-      { "id": 5, "profileId": 4, "recipeId": 11, "day": "Friday", "mealType": "lunch", "date": "2026-04-17" },
-      { "id": 6, "profileId": 3, "recipeId": 8, "day": "Saturday", "mealType": "dinner", "date": "2026-04-18" },
-      { "id": 7, "profileId": 4, "recipeId": 4, "day": "Sunday", "mealType": "breakfast", "date": "2026-04-19" }
+      { "id": 1, "profileId": 2, "recipeId": 1, "day": "Monday", "date": "2026-04-13" },
+      { "id": 2, "profileId": 2, "recipeId": 6, "day": "Tuesday", "date": "2026-04-14" },
+      { "id": 3, "profileId": 2, "recipeId": 9, "day": "Wednesday", "date": "2026-04-15" },
+      { "id": 4, "profileId": 3, "recipeId": 12, "day": "Thursday", "date": "2026-04-16" },
+      { "id": 5, "profileId": 4, "recipeId": 11, "day": "Friday", "date": "2026-04-17" },
+      { "id": 6, "profileId": 3, "recipeId": 8, "day": "Saturday", "date": "2026-04-18" },
+      { "id": 7, "profileId": 4, "recipeId": 4, "day": "Sunday", "date": "2026-04-19" }
     ]
   }
 }
