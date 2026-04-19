@@ -13,7 +13,6 @@ import './App.css'
 
 function App() {
     // TODO: Add a name to the logged in user in navigation
-
     const { isAuth } = useContext(AuthContext);
 
       return (
