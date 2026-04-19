@@ -8,6 +8,8 @@ import getRecipeCategories from "../../helpers/getRecipeCategories.js";
 
 function RecipeDetail() {
     // TODO: Create headers const for the api call so i dont have to type it out every time
+    // TODO: If its your own recipe, add option to edit
+    // TODO: If you are admin, add option to edit
 
     const [recipe, setRecipe] = useState(null);
     const [recipeIngredients, setRecipeIngredients] = useState([]);
