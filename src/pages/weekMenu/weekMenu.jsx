@@ -21,6 +21,7 @@ function WeekMenuPage() {
     const [isSaving, setIsSaving] = useState(false);
     const [ingredients, setIngredients] = useState([]);
     const [recipeIngredients, setRecipeIngredients] = useState([]);
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
@@ -252,12 +253,14 @@ function WeekMenuPage() {
     });
 
     function handleOpenModal(day, date) {
+        setErrors({});
         setSelectedDay(day);
         setSelectedDate(date);
         setIsModalOpen(true);
     }
 
     function handleCloseModal() {
+        setErrors({});
         setIsModalOpen(false);
         setSelectedDay(null);
         setSelectedDate(null);
@@ -265,8 +268,28 @@ function WeekMenuPage() {
         setSelectedTag('');
     }
 
+    function isRecipeAlreadyAddedToDay(recipeId, date) {
+        return weekmenuItems.some(
+            (item) =>
+                Number(item.profileId) === Number(userId) &&
+                item.date === date &&
+                Number(item.recipeId) === Number(recipeId)
+        );
+    }
+
     async function handleAddRecipeToWeekmenu(recipeId) {
         if (!selectedDay || !selectedDate) return;
+
+        setErrors({});
+
+        const recipeAlreadyExists = isRecipeAlreadyAddedToDay(recipeId, selectedDate);
+
+        if (recipeAlreadyExists) {
+            setErrors({
+                duplicateRecipe: 'Dit gerecht is al toegevoegd aan deze dag',
+            });
+            return;
+        }
 
         try {
             setIsSaving(true);
@@ -349,6 +372,15 @@ function WeekMenuPage() {
         );
     }
     function handleGenerateShoppingList() {
+        setErrors({});
+
+        if (totalMeals === 0) {
+            setErrors({
+                emptyWeek: 'Het weekmenu is nog leeg, voeg een recept toe om een boodschappenlijst te maken',
+            });
+            return;
+        }
+
         const generatedList = generateShoppingListForCurrentWeek(
             weekDays,
             recipeIngredients,
@@ -368,6 +400,7 @@ function WeekMenuPage() {
             <div className="container">
                 <div className="weekmenu-topbar">
                     <h1>Weekmenu</h1>
+                    {errors.emptyWeek && (<p className="field-error">{errors.emptyWeek}</p>)}
 
                     <button className="primaryButton" type="button" onClick={handleGenerateShoppingList}>
                         <span>Maak boodschappenlijst</span>
@@ -458,6 +491,7 @@ function WeekMenuPage() {
                     filteredRecipes={filteredRecipes}
                     onAddRecipe={handleAddRecipeToWeekmenu}
                     isSaving={isSaving}
+                    error={errors.duplicateRecipe}
                 />
             )}
         </main>

@@ -20,8 +20,8 @@
       "fields": [
         { "name": "id", "type": "number", "required": true },
         { "name": "title", "type": "string", "required": true, "min": 3, "max": 100 },
-        { "name": "description", "type": "string", "required": true, "min": 10, "max": 500 },
-        { "name": "instructions", "type": "string", "required": true },
+        { "name": "description", "type": "string", "required": true, "min": 10, "max": 70 },
+        { "name": "instructions", "type": "string", "required": true, "min": 1 },
         { "name": "image", "type": "image", "required": false },
         { "name": "servings", "type": "number", "required": true, "min": 1 },
         { "name": "prepTimeMinutes", "type": "number", "required": true, "min": 1 },
