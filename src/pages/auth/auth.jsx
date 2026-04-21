@@ -5,10 +5,9 @@ import {AuthContext} from "../../context/AuthContext.jsx";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
-// TODO: Ik kan nog 2 dezelfde gebruikers aanmaken op het moment.
-
 function Auth() {
     const [isRegister, setIsRegister] = useState(false);
+    const [errors, setErrors] = useState({});
     const { login } = useContext(AuthContext);
 
     const location = useLocation();
@@ -87,7 +86,58 @@ function Auth() {
         }
     }
 
+    async function checkIfEmailExists(email) {
+        try {
+            const response = await axios.get(
+                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/users',
+                {
+                    headers: {
+                        'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
+                    },
+                }
+            );
+
+            const users = response.data;
+            return users.some((user) => user.email === email);
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
+    }
+
+    function validateForm(data) {
+        const newErrors = {};
+
+        if (isRegister && !data.username?.trim()) {
+            newErrors.username = 'Naam is verplicht';
+        }
+
+        if (!data.email?.trim()) {
+            newErrors.email = 'E-mail is verplicht';
+        }
+
+        if (!data.password?.trim()) {
+            newErrors.password = 'Wachtwoord is verplicht';
+        }
+
+        if (isRegister && !data.repeatPassword?.trim()) {
+            newErrors.repeatPassword = 'Herhaal je wachtwoord';
+        }
+
+        if (
+            isRegister &&
+            data.password &&
+            data.repeatPassword &&
+            data.password !== data.repeatPassword
+        ) {
+            newErrors.repeatPassword = 'Wachtwoorden komen niet overeen';
+        }
+
+        return newErrors;
+    }
+
     async function handleSubmit(e) {
+        setErrors({});
         e.preventDefault();
         const formData = new FormData(e.target);
 
@@ -97,9 +147,17 @@ function Auth() {
             password: formData.get('password'),
             repeatPassword: formData.get('repeatPassword'),
         };
+        const validationErrors = validateForm(data);
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
         if (isRegister) {
-            if (data.password !== data.repeatPassword) {
-                console.error('Wachtwoorden komen niet overeen');
+            const emailExists = await checkIfEmailExists(data.email);
+
+            if (emailExists) {
+                setErrors({ email: 'Dit e-mailadres bestaat al' });
                 return;
             }
             await handleRegister(data);
@@ -152,13 +210,14 @@ function Auth() {
                         <form className="auth-form" onSubmit={handleSubmit}>
                             {isRegister && (
                                 <div className="form-group">
-                                    <label htmlFor="name">Naam</label>
+                                    <label htmlFor="username">Naam</label>
                                     <input
                                         id="username"
                                         name="username"
                                         type="text"
                                         placeholder="Kies een username"
                                     />
+                                    {errors.username && <p className="field-error">{errors.username}</p>}
                                 </div>
                             )}
 
@@ -170,6 +229,7 @@ function Auth() {
                                     type="email"
                                     placeholder="je@email.com"
                                 />
+                                {errors.email && <p className="field-error">{errors.email}</p>}
                             </div>
 
                             <div className="form-group">
@@ -180,6 +240,7 @@ function Auth() {
                                     type="password"
                                     placeholder="Wachtwoord"
                                 />
+                                {errors.password && <p className="field-error">{errors.password}</p>}
                             </div>
 
                             {isRegister && (
@@ -193,6 +254,7 @@ function Auth() {
                                         type="password"
                                         placeholder="Herhaal je wachtwoord"
                                     />
+                                    {errors.repeatPassword && <p className="field-error">{errors.repeatPassword}</p>}
                                 </div>
                             )}
 

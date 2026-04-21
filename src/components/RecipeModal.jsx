@@ -11,6 +11,7 @@ function RecipeModal({
                          filteredRecipes,
                          onAddRecipe,
                          isSaving,
+                         error,
                      }) {
     if (!isOpen) return null;
 
@@ -21,6 +22,7 @@ function RecipeModal({
                     <div>
                         <h2>Recept toevoegen</h2>
                         <p>Kies een recept voor deze maaltijd</p>
+                        {error && <p className="field-error">{error}</p>}
                     </div>
 
                     <button

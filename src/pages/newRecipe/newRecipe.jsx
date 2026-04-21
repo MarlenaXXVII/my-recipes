@@ -11,6 +11,7 @@ function NewRecipe() {
     const [allCategories, setAllCategories] = useState([]);
     const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
     const [allIngredients, setAllIngredients] = useState([]);
+    const [errors, setErrors] = useState({});
 
     const [ingredients, setIngredients] = useState([
         { name: '', amount: '', unit: '', notes: '' }
@@ -68,6 +69,58 @@ function NewRecipe() {
         );
     }
 
+    function validateRecipeForm(form, ingredients) {
+        const newErrors = {};
+        const description = form.description.value.trim();
+
+        if (!form.title.value.trim()) {
+            newErrors.title = 'Titel is verplicht';
+        }
+
+        if (!form.description.value.trim()) {
+            if (!description) {
+                newErrors.description = 'Beschrijving is verplicht';
+            } else if (description.length < 10) {
+                newErrors.description = 'Beschrijving moet minimaal 10 tekens bevatten';
+            } else if (description.length <= 70) {
+                newErrors.description = 'Beschrijving mag maximaal 70 tekens bevatten';
+            }
+        }
+
+        if (!form.servings.value.trim()) {
+            newErrors.servings = 'Porties is verplicht';
+        }
+
+        if (!form.prepTimeMinutes.value.trim()) {
+            newErrors.prepTimeMinutes = 'Voorbereidingstijd is verplicht';
+        }
+
+        if (!form.cookTimeMinutes.value.trim()) {
+            newErrors.cookTimeMinutes = 'Bereidingstijd is verplicht';
+        }
+
+        if (!form.difficulty.value.trim()) {
+            newErrors.difficulty = 'Moeilijkheid is verplicht';
+        }
+
+        if (!form.instructions.value.trim()) {
+            newErrors.instructions = 'Bereidingswijze is verplicht';
+        }
+
+        const filledIngredients = ingredients.filter(
+            (ingredient) =>
+                ingredient.name.trim() !== '' &&
+                ingredient.amount !== '' &&
+                ingredient.unit.trim() !== ''
+        );
+
+        if (filledIngredients.length === 0) {
+            newErrors.ingredients = 'Voeg minimaal 1 ingrediënt toe';
+        }
+
+        return newErrors;
+    }
+
     async function handleSubmit(e) {
         e.preventDefault();
 
@@ -79,6 +132,13 @@ function NewRecipe() {
 
         const decoded = jwtDecode(token);
         const form = e.target;
+
+        const validationErrors = validateRecipeForm(form, ingredients);
+
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
 
         const recipeData = {
             title: form.title.value,
@@ -104,7 +164,6 @@ function NewRecipe() {
         };
 
         try {
-            // 1. Recept aanmaken
             const recipeResponse = await axios.post(
                 'https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes',
                 recipeData,
@@ -113,7 +172,6 @@ function NewRecipe() {
 
             const recipeId = recipeResponse.data.id;
 
-            // 2. Categorieën koppelen
             await Promise.all(
                 selectedCategoryIds.map((categoryId) =>
                     axios.post(
@@ -127,7 +185,6 @@ function NewRecipe() {
                 )
             );
 
-            // 3. Ingrediënten verwerken
             const filledIngredients = ingredients.filter(
                 (ingredient) =>
                     ingredient.name.trim() !== '' &&
@@ -191,6 +248,7 @@ function NewRecipe() {
                             type="text"
                             placeholder="Bijv. Spaghetti Bolognese"
                         />
+                        {errors.title && <p className="field-error">{errors.title}</p>}
                     </div>
 
                     <div className="form-group">
@@ -200,6 +258,7 @@ function NewRecipe() {
                             name="description"
                             placeholder="Korte beschrijving van het gerecht"
                         ></textarea>
+                        {errors.description && <p className="field-error">{errors.description}</p>}
                     </div>
 
                     <div className="form-group">
@@ -218,9 +277,10 @@ function NewRecipe() {
                             <input
                                 id="portionAmount"
                                 name="servings"
-                                type="text"
+                                type="number"
                                 placeholder="4"
                             />
+                            {errors.servings && <p className="field-error">{errors.servings}</p>}
                         </div>
 
                         <div className="form-group">
@@ -228,9 +288,10 @@ function NewRecipe() {
                             <input
                                 id="prepTime"
                                 name="prepTimeMinutes"
-                                type="text"
+                                type="number"
                                 placeholder="15"
                             />
+                            {errors.prepTimeMinutes && <p className="field-error">{errors.prepTimeMinutes}</p>}
                         </div>
 
                         <div className="form-group">
@@ -238,9 +299,10 @@ function NewRecipe() {
                             <input
                                 id="cookTime"
                                 name="cookTimeMinutes"
-                                type="text"
+                                type="number"
                                 placeholder="30"
                             />
+                            {errors.cookTimeMinutes && <p className="field-error">{errors.cookTimeMinutes}</p>}
                         </div>
 
                         <div className="form-group">
@@ -251,6 +313,7 @@ function NewRecipe() {
                                 type="text"
                                 placeholder="Beginner"
                             />
+                            {errors.difficulty && <p className="field-error">{errors.difficulty}</p>}
                         </div>
                     </div>
                 </section>
@@ -284,6 +347,7 @@ function NewRecipe() {
                     </div>
 
                     <div className="ingredients-list">
+                        {errors.ingredients && <p className="field-error">{errors.ingredients}</p>}
                         {ingredients.map((ingredient, index) => (
                             <div className="ingredient-row" key={index}>
                                 <div className="form-group small-field">
@@ -351,7 +415,7 @@ function NewRecipe() {
                             <input
                                 id="calories"
                                 name="calories"
-                                type="text"
+                                type="number"
                                 placeholder="520"
                             />
                         </div>
@@ -361,7 +425,7 @@ function NewRecipe() {
                             <input
                                 id="protein"
                                 name="protein"
-                                type="text"
+                                type="number"
                                 placeholder="22"
                             />
                         </div>
@@ -371,7 +435,7 @@ function NewRecipe() {
                             <input
                                 id="carbs"
                                 name="carbs"
-                                type="text"
+                                type="number"
                                 placeholder="58"
                             />
                         </div>
@@ -381,7 +445,7 @@ function NewRecipe() {
                             <input
                                 id="fat"
                                 name="fat"
-                                type="text"
+                                type="number"
                                 placeholder="21"
                             />
                         </div>
@@ -396,6 +460,7 @@ function NewRecipe() {
                             name="instructions"
                             placeholder="Beschrijf stap voor stap hoe je het gerecht bereidt.."
                         ></textarea>
+                        {errors.instructions && <p className="field-error">{errors.instructions}</p>}
                     </div>
                 </section>
 

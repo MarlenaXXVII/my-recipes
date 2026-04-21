@@ -77,6 +77,11 @@ main .container{
     flex-direction: column;
     align-items: center;
 }
+.field-error {
+    margin-top: 4px !important;
+    color: red !important;
+    font-size: 0.9rem !important;
+}
 footer{
      border-top: 1px solid gray;
  }
