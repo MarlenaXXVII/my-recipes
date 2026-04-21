@@ -5,6 +5,7 @@ import axios from "axios";
 import makeInstructionsReadable from "../../helpers/makeInstructionsReadable.js";
 import getRecipeIngredients from "../../helpers/getRecipeIngredients.js";
 import getRecipeCategories from "../../helpers/getRecipeCategories.js";
+import { Clock, Users, ChefHat } from 'lucide-react';
 
 function RecipeDetail() {
     // TODO: Create headers const for the api call so i dont have to type it out every time
@@ -134,18 +135,35 @@ function RecipeDetail() {
 
                             <section className="recipe-info-card">
                                 <div className="recipe-info-item">
-                                    <span className="recipe-info-label">Totale tijd</span>
-                                    <strong>{totalTime} minuten</strong>
+                                    <span className="recipe-info-item-icon">
+                                        <Clock />
+                                    </span>
+                                    <span className="recipe-info-item-text">
+                                        <span className="recipe-info-label">Totale tijd</span>
+                                        <strong>{totalTime} minuten</strong>
+                                    </span>
                                 </div>
 
                                 <div className="recipe-info-item">
-                                    <span className="recipe-info-label">Porties</span>
-                                    <strong>{recipe.servings}</strong>
+                                    <span className="recipe-info-item-icon">
+                                        <Users />
+                                    </span>
+
+                                    <span className="recipe-info-item-text">
+                                        <span className="recipe-info-label">Porties</span>
+                                        <strong>{recipe.servings}</strong>
+                                    </span>
                                 </div>
 
                                 <div className="recipe-info-item">
-                                    <span className="recipe-info-label">Moeilijkheid</span>
-                                    <strong>{recipe.difficulty}</strong>
+                                    <span className="recipe-info-item-icon">
+                                        <ChefHat />
+                                    </span>
+
+                                    <span className="recipe-info-item-text">
+                                        <span className="recipe-info-label">Moeilijkheid</span>
+                                        <strong>{recipe.difficulty}</strong>
+                                    </span>
                                 </div>
                             </section>
 
@@ -154,11 +172,14 @@ function RecipeDetail() {
                                 <p className="recipe-detail-card-subtitle">Zo maak je het</p>
 
                                 <div className="recipe-steps">
-                                    {makeInstructionsReadable(recipe.instructions).map((step, index) => (
-                                        <p key={index} className="recipe-info-label">
-                                            {step}.
-                                        </p>
-                                    ))}
+                                    <ul className="recipe-info-label">
+                                        {makeInstructionsReadable(recipe.instructions).map((step, index) => (
+
+                                            <li key={index}>
+                                                {step}.
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             </section>
                         </section>

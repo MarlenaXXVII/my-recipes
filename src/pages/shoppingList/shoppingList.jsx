@@ -1,6 +1,7 @@
 import './shoppingList.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
 
 function ShoppingList() {
     // TODO: Add functionality to the download and share buttons
@@ -44,7 +45,7 @@ function ShoppingList() {
                     className="back-button"
                     onClick={() => navigate('/weekmenu')}
                 >
-                    ← Terug naar weekmenu
+                    <ArrowLeft /> Terug naar weekmenu
                 </button>
 
                 <div className="shopping-list-header">

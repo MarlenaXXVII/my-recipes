@@ -12,6 +12,8 @@
     cursor: pointer;
     font-size: 0.95rem;
     color: #4b5563;
+    display: flex;
+    align-items: center;
 }
 
 .shopping-list-header {
@@ -63,6 +65,10 @@
     border: 1px solid #e5e7eb;
     border-radius: 18px;
     overflow: hidden;
+}
+
+.shopping-list-card p{
+    padding: 10px;
 }
 
 .shopping-list-item {

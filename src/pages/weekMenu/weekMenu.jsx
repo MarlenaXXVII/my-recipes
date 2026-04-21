@@ -3,6 +3,7 @@ import RecipeModal from '../../components/RecipeModal.jsx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import axios from 'axios';
 
 function WeekMenuPage() {
@@ -380,7 +381,7 @@ function WeekMenuPage() {
                         aria-label="Vorige week"
                         onClick={() => setWeekOffset((prev) => prev - 1)}
                     >
-                        &larr;
+                        <ChevronLeft />
                     </button>
 
                     <div className="week-selector-info">
@@ -394,7 +395,7 @@ function WeekMenuPage() {
                         aria-label="Volgende week"
                         onClick={() => setWeekOffset((prev) => prev + 1)}
                     >
-                        &rarr;
+                        <ChevronRight />
                     </button>
                 </section>
 

@@ -1,3 +1,5 @@
+import { Clock, Users, Flame, Search, X } from 'lucide-react';
+
 function RecipeModal({
                          isOpen,
                          onClose,
@@ -26,12 +28,13 @@ function RecipeModal({
                         className="recipe-modal-close-button"
                         onClick={onClose}
                     >
-                        ✕
+                        <X />
                     </button>
                 </div>
 
                 <div className="recipe-modal-content">
                     <div className="recipe-modal-search">
+                        <Search />
                         <input
                             type="text"
                             placeholder="Zoek recepten..."
@@ -85,9 +88,9 @@ function RecipeModal({
                                             <p>{recipe.description}</p>
 
                                             <div className="recipe-select-card-footer">
-                                                <span>{totalTime} min</span>
-                                                <span>{recipe.servings}</span>
-                                                <span>{recipe.calories || 0} kcal</span>
+                                                <span><Clock />{totalTime} min</span>
+                                                <span><Users />{recipe.servings}</span>
+                                                <span><Flame />{recipe.calories || 0} kcal</span>
                                             </div>
                                         </div>
                                     </button>
