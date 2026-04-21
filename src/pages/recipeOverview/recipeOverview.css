@@ -168,6 +168,10 @@
     font-size: 14px;
     color: #6B7280;
 }
+.recipe-meta span{
+    display: flex;
+    align-items: center;
+}
 
 .error-message,
 .loading-message {
@@ -194,6 +198,9 @@
     font-size: 16px;
     cursor: pointer;
     transition: 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .pagination-button:hover {

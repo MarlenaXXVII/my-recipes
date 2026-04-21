@@ -157,7 +157,7 @@ function Auth() {
                                         id="username"
                                         name="username"
                                         type="text"
-                                        placeholder="Je volledige naam"
+                                        placeholder="Kies een username"
                                     />
                                 </div>
                             )}
@@ -178,7 +178,7 @@ function Auth() {
                                     id="password"
                                     name="password"
                                     type="password"
-                                    placeholder="Minimaal 6 tekens"
+                                    placeholder="Wachtwoord"
                                 />
                             </div>
 

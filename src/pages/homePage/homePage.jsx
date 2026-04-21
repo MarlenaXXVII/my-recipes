@@ -6,7 +6,7 @@ import groceryList from "../../assets/groceryList.png";
 import myRecipes from "../../assets/myRecipes.png";
 import newRecipe from "../../assets/newRecipe.png";
 import tryThis from "../../assets/tryThis.png";
-import {useNavigate} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 function Homepage() {
@@ -42,8 +42,8 @@ function Homepage() {
                     </p>
                 </div>
                 <div className={"intro-buttons"}>
-                    <button className={"primaryButton"} type={"button"}>Aan de slag</button>
-                    <button className={"secondaryButton"} type={"button"}>Bekijk recepten</button>
+                    <NavLink to="/" className={"primaryButton"} type={"button"}>Aan de slag</NavLink>
+                    <NavLink to="/" className={"secondaryButton"} type={"button"}>Bekijk recepten</NavLink>
                 </div>
             </div>
             <div className="tile-wrapper">

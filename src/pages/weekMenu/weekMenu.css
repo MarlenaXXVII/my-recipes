@@ -251,7 +251,7 @@
     gap: 12px;
     border: 1px solid #d1d5db;
     border-radius: 16px;
-    padding: 14px 16px;
+    padding: 0 16px;
     margin-bottom: 20px;
     color: #94a3b8;
 }
@@ -263,6 +263,7 @@
     background: transparent;
     font-size: 1rem;
     color: #0f172a;
+    padding: 14px 5px;
 }
 
 .recipe-modal-search input::placeholder {

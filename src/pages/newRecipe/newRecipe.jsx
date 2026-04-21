@@ -2,11 +2,10 @@ import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from "../../context/AuthContext.jsx";
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import './newRecipe.css';
 
 function NewRecipe() {
-    const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [allCategories, setAllCategories] = useState([]);
@@ -195,7 +194,7 @@ function NewRecipe() {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="shortDescription">Beschrijving</label>
+                        <label htmlFor="shortDescription">Beschrijving *</label>
                         <textarea
                             id="shortDescription"
                             name="description"
@@ -225,7 +224,7 @@ function NewRecipe() {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="prepTime">Voorbereiden (min)</label>
+                            <label htmlFor="prepTime">Voorbereiden (min) *</label>
                             <input
                                 id="prepTime"
                                 name="prepTimeMinutes"
@@ -235,7 +234,7 @@ function NewRecipe() {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="cookTime">Bereiden (min)</label>
+                            <label htmlFor="cookTime">Bereiden (min) *</label>
                             <input
                                 id="cookTime"
                                 name="cookTimeMinutes"
@@ -245,7 +244,7 @@ function NewRecipe() {
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="difficulty">Moeilijkheid</label>
+                            <label htmlFor="difficulty">Moeilijkheid *</label>
                             <input
                                 id="difficulty"
                                 name="difficulty"
@@ -390,7 +389,7 @@ function NewRecipe() {
                 </section>
 
                 <section className="formSection">
-                    <h2>Bereidingswijze</h2>
+                    <h2>Bereidingswijze *</h2>
                     <div className="form-group">
                         <textarea
                             id="preparation"
@@ -401,9 +400,9 @@ function NewRecipe() {
                 </section>
 
                 <div className="buttons">
-                    <button type="button" className="secondaryButton">
+                    <NavLink to="/" className="secondaryButton">
                         Annuleren
-                    </button>
+                    </NavLink>
                     <button type="submit" className="primaryButton">
                         Recept aanmaken
                     </button>

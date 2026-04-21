@@ -34,6 +34,7 @@ p{
     border: 1px solid #D1D5DC;
     border-radius: 14px;
     text-decoration: none;
+    cursor: pointer;
 }
 .primaryButton:hover {
     transform: translateY(-1px);
@@ -48,6 +49,7 @@ p{
     border: 1px solid #D1D5DC;
     border-radius: 14px;
     text-decoration: none;
+    cursor: pointer;
 }
 
 nav {
@@ -61,6 +63,9 @@ nav {
 }
 .body{
     background-color: #F9FAFB;
+}
+main .container{
+    padding-bottom: 40px;
 }
 .container{
     width: 100%;
@@ -78,6 +83,9 @@ footer{
 .footer{
     display: flex;
     justify-content: center;
+}
+.footer.container{
+    padding: 1rem;
 }
 nav li {
     list-style: none;

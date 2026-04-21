@@ -3,11 +3,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { Clock, Users, Flame, ChevronRight, ChevronLeft } from 'lucide-react';
 
 function AllRecipe({ onlyMine = false }) {
     const [recipes, setRecipes] = useState([]);
     const [categories, setCategories] = useState([]);
     const [recipeCategories, setRecipeCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState("all");
     const [error, setError] = useState("");
     const token = localStorage.getItem('token');
     const decoded = token ? jwtDecode(token) : null;
@@ -20,15 +22,21 @@ function AllRecipe({ onlyMine = false }) {
 
     const recipeCategoryMap = recipeCategories.reduce((acc, item) => {
         if (!acc[item.recipeId]) {
-            acc[item.recipeId] = item.categoryId;
+            acc[item.recipeId] = [];
         }
+        acc[item.recipeId].push(item.categoryId);
         return acc;
     }, {});
 
-
-    const filteredRecipes = onlyMine
+    let filteredRecipes = onlyMine
         ? recipes.filter(recipe => recipe.ownerProfileId === userId)
         : recipes;
+
+    if (selectedCategory !== "all") {
+        filteredRecipes = filteredRecipes.filter((recipe) =>
+            recipeCategoryMap[recipe.id]?.includes(selectedCategory)
+        );
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -84,19 +92,24 @@ function AllRecipe({ onlyMine = false }) {
                     </div>
 
                     <div className="filter-tags">
-                        <button type="button" className="filter-tag active">🍽 Alle</button>
-                        <button type="button" className="filter-tag">🍰 Dessert</button>
-                        <button type="button" className="filter-tag">🍽 Diner</button>
-                        <button type="button" className="filter-tag">🥗 Lunch</button>
-                        <button type="button" className="filter-tag">🍳 Ontbijt</button>
-                        <button type="button" className="filter-tag">🍝 Pasta</button>
-                        <button type="button" className="filter-tag">🥗 Salade</button>
-                        <button type="button" className="filter-tag">🍟 Snack</button>
-                        <button type="button" className="filter-tag">🍲 Soep</button>
-                        <button type="button" className="filter-tag">🌱 Vegan</button>
-                        <button type="button" className="filter-tag">🥕 Vegetarisch</button>
-                        <button type="button" className="filter-tag">🐟 Vis</button>
-                        <button type="button" className="filter-tag">🥩 Vlees</button>
+                        <button
+                            type="button"
+                            className={`filter-tag ${selectedCategory === "all" ? "active" : ""}`}
+                            onClick={() => setSelectedCategory("all")}
+                        >
+                            Alle
+                        </button>
+
+                        {categories.map((category) => (
+                            <button
+                                key={category.id}
+                                type="button"
+                                className={`filter-tag ${selectedCategory === category.id ? "active" : ""}`}
+                                onClick={() => setSelectedCategory(category.id)}
+                            >
+                                {category.name}
+                            </button>
+                        ))}
                     </div>
                 </div>
             </section>
@@ -120,9 +133,11 @@ function AllRecipe({ onlyMine = false }) {
                                                 alt={recipe.title}
                                                 className="recipe-card-image"
                                             />
-                                            <span className="recipe-category-badge">
-                                                {categoryMap[recipeCategoryMap[recipe.id]] || "Geen categorie"}
-                                            </span>
+                                            {recipeCategoryMap[recipe.id]?.length > 0 && (
+                                                <span className="recipe-category-badge">
+                                                    {categoryMap[recipeCategoryMap[recipe.id][0]]}
+                                                </span>
+                                            )}
                                         </div>
 
                                         <div className="recipe-card-content">
@@ -130,9 +145,9 @@ function AllRecipe({ onlyMine = false }) {
                                             <p>{recipe.description}</p>
 
                                             <div className="recipe-meta">
-                                                <span>🕒 {recipe.prepTimeMinutes} min</span>
-                                                <span>👥 {recipe.servings}</span>
-                                                <span>🔥 {recipe.calories} kcal</span>
+                                                <span><Clock /> {recipe.prepTimeMinutes} min</span>
+                                                <span><Users /> {recipe.servings} pers.</span>
+                                                <span><Flame /> {recipe.calories} kcal</span>
                                             </div>
                                         </div>
                                     </Link>
@@ -141,11 +156,11 @@ function AllRecipe({ onlyMine = false }) {
                         </div>
 
                         <div className="pagination">
-                            <button type="button" className="pagination-button">‹</button>
+                            <button type="button" className="pagination-button"><ChevronLeft /></button>
                             <button type="button" className="pagination-button active">1</button>
                             <button type="button" className="pagination-button">2</button>
                             <button type="button" className="pagination-button">3</button>
-                            <button type="button" className="pagination-button">›</button>
+                            <button type="button" className="pagination-button"><ChevronRight /></button>
                         </div>
                     </>
                 )}
