@@ -12,6 +12,7 @@ import GroceryList from './pages/shoppingList/shoppingList.jsx';
 import RecipeDetail from './pages/recipeDetail/recipeDetail.jsx';
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
+import EditRecipe from "./pages/editRecipe/editRecipe.jsx";
 
 function App() {
     const { isAuth } = useContext(AuthContext);
@@ -72,6 +73,7 @@ function App() {
                         <Route path="/" element={<Homepage />} />
                         <Route path="/alle-recepten" element={<AllRecipe />} />
                         <Route path="/recept/:id" element={<RecipeDetail />} />
+                        <Route path="/recept/bewerk/:id" element={<EditRecipe />} />
                         <Route path="/nieuw-recept" element={isAuth ? <NewRecipe /> : <Navigate to="/login" state={{ message: "Om een recept aan te maken moet je ingelogd zijn" }} />}/>
                         <Route path="/mijn-recepten" element={isAuth ? <AllRecipe onlyMine={true} /> : <Navigate to="/login" state={{ message: "Log in om je eigen recepten te bekijken" }} />}/>
                         <Route path="/boodschappenlijst" element={isAuth ? <GroceryList /> : <Navigate to="/login" state={{ message: "Om een boodschappenlijst aan te maken moet je ingelogd zijn" }} />}/>

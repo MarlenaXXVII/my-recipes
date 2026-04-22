@@ -1,65 +1,60 @@
 import './recipeDetail.css';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import makeInstructionsReadable from "../../helpers/makeInstructionsReadable.js";
 import getRecipeIngredients from "../../helpers/getRecipeIngredients.js";
 import getRecipeCategories from "../../helpers/getRecipeCategories.js";
 import { Clock, Users, ChefHat } from 'lucide-react';
 
 function RecipeDetail() {
-    // TODO: Create headers const for the api call so i dont have to type it out every time
-    // TODO: If its your own recipe, add option to edit
-    // TODO: If you are admin, add option to edit
-
     const [recipe, setRecipe] = useState(null);
     const [recipeIngredients, setRecipeIngredients] = useState([]);
     const [recipeCategories, setRecipeCategories] = useState([]);
     const { id } = useParams();
+    const navigate = useNavigate();
+
+    const token = localStorage.getItem('token');
+
+    let currentUserId = null;
+    let isAdmin = false;
+
+    if (token) {
+        const decoded = jwtDecode(token);
+        currentUserId = Number(decoded.userId);
+
+        isAdmin =
+            decoded.role === 'admin';
+    }
 
     useEffect(() => {
         async function fetchRecipeData() {
             try {
-                const [recipeResponse, recipeIngredientsResponse, ingredientsResponse, recipeCategoriesResponse, categoriesResponse ] = await Promise.all([
+                const headers = {
+                    'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
+                };
+
+                const [recipeResponse, recipeIngredientsResponse, ingredientsResponse, recipeCategoriesResponse, categoriesResponse] = await Promise.all([
                     axios.get(
                         `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes/${id}`,
-                        {
-                            headers: {
-                                'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                            },
-                        }
+                        { headers }
                     ),
                     axios.get(
                         `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_ingredients`,
-                        {
-                            headers: {
-                                'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                            },
-                        }
+                        { headers }
                     ),
                     axios.get(
                         `https://novi-backend-api-wgsgz.ondigitalocean.app/api/ingredients`,
-                        {
-                            headers: {
-                                'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                            },
-                        }
+                        { headers }
                     ),
                     axios.get(
                         `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_categories`,
-                        {
-                            headers: {
-                                'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                            },
-                        }
+                        { headers }
                     ),
                     axios.get(
                         `https://novi-backend-api-wgsgz.ondigitalocean.app/api/categories`,
-                        {
-                            headers: {
-                                'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                            },
-                        }
+                        { headers }
                     ),
                 ]);
 
@@ -94,7 +89,6 @@ function RecipeDetail() {
 
     if (!recipe) {
         return (
-
             <div className="container">
                 <div className="recipe-detail-page">
                     <div className="container">
@@ -106,138 +100,147 @@ function RecipeDetail() {
     }
 
     const totalTime = recipe.prepTimeMinutes + recipe.cookTimeMinutes;
+    const isOwner = Number(recipe.ownerProfileId) === currentUserId;
+    const canEdit = isOwner || isAdmin;
 
     return (
-            <div className="container">
-                <div className="recipe-detail-content">
-                    <div className="recipe-detail-header">
+        <div className="container">
+            <div className="recipe-detail-content">
+                <div className="recipe-detail-header">
+                    <div className="recipe-title-and-button">
                         <h1>{recipe.title}</h1>
-                        <p className="recipe-description">{recipe.description}</p>
-                        <div className="recipe-tags">
+                        {canEdit && (
+                            <button
+                                type="button"
+                                className="primaryButton"
+                                onClick={() => navigate(`/recept/bewerk/${recipe.id}`)}
+                            >
+                                Bewerk recept
+                            </button>
+                        )}
+                    </div>
+                    <p className="recipe-description">{recipe.description}</p>
+
+                    <div className="recipe-tags">
                             {recipeCategories.map((category) => (
                                 <span className="recipe-tag" key={category.categoryId}>
                                     {category.name}
                                 </span>
                             ))}
-                        </div>
-                    </div>
-
-                    <div className="recipe-detail-layout">
-                        <section className="recipe-detail-main">
-                            <div className="recipe-image-wrapper">
-                                <img
-                                    // src="https://images.unsplash.com/photo-1603133872878-684f208fb84b"
-                                    src={recipe.image}
-                                    alt={recipe.title}
-                                    className="recipe-image"
-                                />
-                            </div>
-
-                            <section className="recipe-info-card">
-                                <div className="recipe-info-item">
-                                    <span className="recipe-info-item-icon">
-                                        <Clock />
-                                    </span>
-                                    <span className="recipe-info-item-text">
-                                        <span className="recipe-info-label">Totale tijd</span>
-                                        <strong>{totalTime} minuten</strong>
-                                    </span>
-                                </div>
-
-                                <div className="recipe-info-item">
-                                    <span className="recipe-info-item-icon">
-                                        <Users />
-                                    </span>
-
-                                    <span className="recipe-info-item-text">
-                                        <span className="recipe-info-label">Porties</span>
-                                        <strong>{recipe.servings}</strong>
-                                    </span>
-                                </div>
-
-                                <div className="recipe-info-item">
-                                    <span className="recipe-info-item-icon">
-                                        <ChefHat />
-                                    </span>
-
-                                    <span className="recipe-info-item-text">
-                                        <span className="recipe-info-label">Moeilijkheid</span>
-                                        <strong>{recipe.difficulty}</strong>
-                                    </span>
-                                </div>
-                            </section>
-
-                            <section className="recipe-detail-card">
-                                <h3>Bereidingswijze</h3>
-                                <p className="recipe-detail-card-subtitle">Zo maak je het</p>
-
-                                <div className="recipe-steps">
-                                    <ul className="recipe-info-label">
-                                        {makeInstructionsReadable(recipe.instructions).map((step, index) => (
-
-                                            <li key={index}>
-                                                {step}.
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </section>
-                        </section>
-
-                        <aside className="recipe-detail-sidebar">
-
-                            <section className="recipe-detail-card">
-                                <h3>Ingrediënten</h3>
-                                <p className="recipe-detail-card-subtitle">
-                                    Voor {recipe.servings} porties
-                                </p>
-
-                                <div className="ingredients-list">
-                                    {recipeIngredients.map((ingredient) => (
-                                        <div className="ingredient-row" key={ingredient.id}>
-                                            <span>
-                                                {ingredient.name}
-                                                {ingredient.notes ? ` (${ingredient.notes})` : ''}
-                                            </span>
-                                            <span>
-                                                {ingredient.amount} {ingredient.unit}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </section>
-
-                            <section className="recipe-detail-card">
-                                <h3>Voedingswaarde</h3>
-                                <p className="recipe-detail-card-subtitle">Per portie</p>
-
-                                <div className="nutrition-list">
-                                    <div className="nutrition-box">
-                                        <strong>{recipe.calories}</strong>
-                                        <span>kcal</span>
-                                    </div>
-
-                                    <div className="nutrition-box">
-                                        <strong>{recipe.protein}g</strong>
-                                        <span>eiwit</span>
-                                    </div>
-
-                                    <div className="nutrition-box">
-                                        <strong>{recipe.carbs}g</strong>
-                                        <span>koolhydraten</span>
-                                    </div>
-
-                                    <div className="nutrition-box">
-                                        <strong>{recipe.fat}g</strong>
-                                        <span>vet</span>
-                                    </div>
-                                </div>
-                            </section>
-
-                        </aside>
                     </div>
                 </div>
+
+                <div className="recipe-detail-layout">
+                    <section className="recipe-detail-main">
+                        <div className="recipe-image-wrapper">
+                            <img
+                                // src="https://images.unsplash.com/photo-1603133872878-684f208fb84b"
+                                src={recipe.image}
+                                alt={recipe.title}
+                                className="recipe-image"
+                            />
+                        </div>
+
+                        <section className="recipe-info-card">
+                            <div className="recipe-info-item">
+                                <span className="recipe-info-item-icon">
+                                    <Clock />
+                                </span>
+                                <span className="recipe-info-item-text">
+                                    <span className="recipe-info-label">Totale tijd</span>
+                                    <strong>{totalTime} minuten</strong>
+                                </span>
+                            </div>
+
+                            <div className="recipe-info-item">
+                                <span className="recipe-info-item-icon">
+                                    <Users />
+                                </span>
+
+                                <span className="recipe-info-item-text">
+                                    <span className="recipe-info-label">Porties</span>
+                                    <strong>{recipe.servings}</strong>
+                                </span>
+                            </div>
+
+                            <div className="recipe-info-item">
+                                <span className="recipe-info-item-icon">
+                                    <ChefHat />
+                                </span>
+
+                                <span className="recipe-info-item-text">
+                                    <span className="recipe-info-label">Moeilijkheid</span>
+                                    <strong>{recipe.difficulty}</strong>
+                                </span>
+                            </div>
+                        </section>
+
+                        <section className="recipe-detail-card">
+                            <h3>Bereidingswijze</h3>
+                            <p className="recipe-detail-card-subtitle">Zo maak je het</p>
+
+                            <div className="recipe-steps">
+                                <ul className="recipe-info-label">
+                                    {makeInstructionsReadable(recipe.instructions).map((step, index) => (
+                                        <li key={index}>{step}.</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+
+                    <aside className="recipe-detail-sidebar">
+                        <section className="recipe-detail-card">
+                            <h3>Ingrediënten</h3>
+                            <p className="recipe-detail-card-subtitle">
+                                Voor {recipe.servings} porties
+                            </p>
+
+                            <div className="ingredients-list">
+                                {recipeIngredients.map((ingredient) => (
+                                    <div className="ingredient-row" key={ingredient.id}>
+                                        <span>
+                                            {ingredient.name}
+                                            {ingredient.notes ? ` (${ingredient.notes})` : ''}
+                                        </span>
+                                        <span>
+                                            {ingredient.amount} {ingredient.unit}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section className="recipe-detail-card">
+                            <h3>Voedingswaarde</h3>
+                            <p className="recipe-detail-card-subtitle">Per portie</p>
+
+                            <div className="nutrition-list">
+                                <div className="nutrition-box">
+                                    <strong>{recipe.calories}</strong>
+                                    <span>kcal</span>
+                                </div>
+
+                                <div className="nutrition-box">
+                                    <strong>{recipe.protein}g</strong>
+                                    <span>eiwit</span>
+                                </div>
+
+                                <div className="nutrition-box">
+                                    <strong>{recipe.carbs}g</strong>
+                                    <span>koolhydraten</span>
+                                </div>
+
+                                <div className="nutrition-box">
+                                    <strong>{recipe.fat}g</strong>
+                                    <span>vet</span>
+                                </div>
+                            </div>
+                        </section>
+                    </aside>
+                </div>
             </div>
+        </div>
     );
 }
 
