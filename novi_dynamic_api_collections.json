@@ -20,7 +20,7 @@
       "fields": [
         { "name": "id", "type": "number", "required": true },
         { "name": "title", "type": "string", "required": true, "min": 3, "max": 100 },
-        { "name": "description", "type": "string", "required": true, "min": 10, "max": 70 },
+        { "name": "description", "type": "string", "required": true, "min": 10, "max": 200 },
         { "name": "instructions", "type": "string", "required": true, "min": 1 },
         { "name": "image", "type": "image", "required": false },
         { "name": "servings", "type": "number", "required": true, "min": 1 },
@@ -38,7 +38,7 @@
         "POST": ["admin", "user"],
         "PUT": ["admin", "user"],
         "PATCH": ["admin", "user"],
-        "DELETE": ["admin"]
+        "DELETE": ["admin", "user"]
       }
     },
     {
@@ -84,7 +84,7 @@
         "POST": ["admin", "user"],
         "PUT": ["admin", "user"],
         "PATCH": ["admin", "user"],
-        "DELETE": ["admin"]
+        "DELETE": ["admin", "user"]
       }
     },
     {
@@ -99,7 +99,7 @@
         "POST": ["admin", "user"],
         "PUT": ["admin", "user"],
         "PATCH": ["admin", "user"],
-        "DELETE": ["admin"]
+        "DELETE": ["admin", "user"]
       }
     },
     {
