@@ -7,6 +7,7 @@ import makeInstructionsReadable from "../../helpers/makeInstructionsReadable.js"
 import getRecipeIngredients from "../../helpers/getRecipeIngredients.js";
 import getRecipeCategories from "../../helpers/getRecipeCategories.js";
 import { Clock, Users, ChefHat } from 'lucide-react';
+import appLogoOnly from '../../assets/appLogoOnly.svg';
 
 function RecipeDetail() {
     const [recipe, setRecipe] = useState(null);
@@ -103,6 +104,14 @@ function RecipeDetail() {
     const isOwner = Number(recipe.ownerProfileId) === currentUserId;
     const canEdit = isOwner || isAdmin;
 
+    const BASE_URL = 'https://novi-backend-api-wgsgz.ondigitalocean.app';
+
+    const imageSrc = recipe.image
+        ? recipe.image.base64
+            ? `data:${recipe.image.contentType};base64,${recipe.image.base64}`
+            : `${BASE_URL}${recipe.image}`
+        : appLogoOnly;
+
     return (
         <div className="container">
             <div className="recipe-detail-content">
@@ -134,8 +143,7 @@ function RecipeDetail() {
                     <section className="recipe-detail-main">
                         <div className="recipe-image-wrapper">
                             <img
-                                // src="https://images.unsplash.com/photo-1603133872878-684f208fb84b"
-                                src={recipe.image}
+                                src={imageSrc}
                                 alt={recipe.title}
                                 className="recipe-image"
                             />
