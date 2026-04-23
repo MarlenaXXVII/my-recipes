@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { Clock, Users, Flame, ChevronRight, ChevronLeft } from 'lucide-react';
+import appLogoOnly from "../../assets/appLogoOnly.svg";
 
 function AllRecipe({ onlyMine = false }) {
     const [recipes, setRecipes] = useState([]);
@@ -72,6 +73,8 @@ function AllRecipe({ onlyMine = false }) {
         fetchData();
     }, []);
 
+    const BASE_URL = 'https://novi-backend-api-wgsgz.ondigitalocean.app';
+
     return (
         <main className="recipe-page">
             <section className="recipe-hero container">
@@ -124,35 +127,43 @@ function AllRecipe({ onlyMine = false }) {
                 {recipes.length > 0 && (
                     <>
                         <div className="recipe-grid">
-                            {filteredRecipes.map((recipe) => (
-                                <article className="recipe-card" key={recipe.id}>
-                                    <Link to={`/recept/${recipe.id}`} className="recipe-card-link">
-                                        <div className="recipe-card-image-wrapper">
-                                            <img
-                                                src={recipe.image}
-                                                alt={recipe.title}
-                                                className="recipe-card-image"
-                                            />
-                                            {recipeCategoryMap[recipe.id]?.length > 0 && (
-                                                <span className="recipe-category-badge">
-                                                    {categoryMap[recipeCategoryMap[recipe.id][0]]}
-                                                </span>
-                                            )}
-                                        </div>
+                            {filteredRecipes.map((recipe) => {
+                                const imageSrc = recipe.image
+                                    ? recipe.image.base64
+                                        ? `data:${recipe.image.contentType};base64,${recipe.image.base64}`
+                                        : `${BASE_URL}${recipe.image}`
+                                    : appLogoOnly;
 
-                                        <div className="recipe-card-content">
-                                            <h3>{recipe.title}</h3>
-                                            <p>{recipe.description}</p>
-
-                                            <div className="recipe-meta">
-                                                <span><Clock /> {recipe.prepTimeMinutes} min</span>
-                                                <span><Users /> {recipe.servings} pers.</span>
-                                                <span><Flame /> {recipe.calories} kcal</span>
+                                return (
+                                    <article className="recipe-card" key={recipe.id}>
+                                        <Link to={`/recept/${recipe.id}`} className="recipe-card-link">
+                                            <div className="recipe-card-image-wrapper">
+                                                <img
+                                                    src={imageSrc}
+                                                    alt={recipe.title}
+                                                    className="recipe-card-image"
+                                                />
+                                                {recipeCategoryMap[recipe.id]?.length > 0 && (
+                                                    <span className="recipe-category-badge">
+                                                        {categoryMap[recipeCategoryMap[recipe.id][0]]}
+                                                    </span>
+                                                )}
                                             </div>
-                                        </div>
-                                    </Link>
-                                </article>
-                            ))}
+
+                                            <div className="recipe-card-content">
+                                                <h3>{recipe.title}</h3>
+                                                <p>{recipe.description}</p>
+
+                                                <div className="recipe-meta">
+                                                    <span><Clock /> {recipe.prepTimeMinutes} min</span>
+                                                    <span><Users /> {recipe.servings} pers.</span>
+                                                    <span><Flame /> {recipe.calories} kcal</span>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    </article>
+                                );
+                            })}
                         </div>
 
                         <div className="pagination">

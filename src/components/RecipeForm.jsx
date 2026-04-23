@@ -14,6 +14,7 @@ function RecipeForm({ initialValues, onSave, buttonText, title, cancelPath }) {
             ? initialValues.ingredients
             : [{ name: '', amount: '', unit: '', notes: '' }]
     );
+    const [selectedFile, setSelectedFile] = useState(null);
 
     useEffect(() => {
         async function fetchFormOptions() {
@@ -70,17 +71,18 @@ function RecipeForm({ initialValues, onSave, buttonText, title, cancelPath }) {
     function validateRecipeForm(form, ingredients) {
         const newErrors = {};
         const description = form.description.value.trim();
+        const imageFile = form.image?.files?.[0];
 
         if (!form.title.value.trim()) {
-            newErrors.title = 'Title is required';
+            newErrors.title = 'Titel is verplicht';
         }
 
         if (!description) {
             newErrors.description = 'Beschrijving is verplicht';
         } else if (description.length < 10) {
             newErrors.description = 'Beschrijving moet minimaal 10 tekens bevatten';
-        } else if (description.length > 150) {
-            newErrors.description = 'Beschrijving mag maximaal 70 tekens bevatten';
+        } else if (description.length > 200) {
+            newErrors.description = 'Beschrijving mag maximaal 200 tekens bevatten';
         }
 
         if (!form.servings.value.trim()) {
@@ -101,6 +103,24 @@ function RecipeForm({ initialValues, onSave, buttonText, title, cancelPath }) {
 
         if (!form.instructions.value.trim()) {
             newErrors.instructions = 'Bereidingswijze is verplicht';
+        }
+
+        if (imageFile) {
+            const allowedTypes = [
+                'image/jpeg',
+                'image/png',
+                'image/gif',
+                'image/webp',
+                'image/svg+xml',
+            ];
+
+            if (!allowedTypes.includes(imageFile.type)) {
+                newErrors.image = 'Alleen jpg, png, gif, webp en svg zijn toegestaan';
+            }
+
+            if (imageFile.size > 2097152) {
+                newErrors.image = 'Afbeelding mag maximaal 2MB zijn';
+            }
         }
 
         const filledIngredients = ingredients.filter(
@@ -173,10 +193,16 @@ function RecipeForm({ initialValues, onSave, buttonText, title, cancelPath }) {
                         <label htmlFor="image">Afbeelding</label>
                         <label htmlFor="image" className="upload-box">
                             <span className="upload-icon">&uarr;</span>
-                            <span>Klik om een afbeelding te uploaden</span>
-                            <small>Max 5MB</small>
+                            <span>{selectedFile ? selectedFile.name : "Klik om een afbeelding te uploaden"}</span>
+                            <small>Max 2MB</small>
                         </label>
-                        <input id="image" name="image" type="file" hidden />
+                        <input id="image" name="image" type="file" hidden
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                setSelectedFile(file || null);
+                            }}
+                        />
+                        {errors.image && <p className="field-error">{errors.image}</p>}
                     </div>
 
                     <div className="form-row">

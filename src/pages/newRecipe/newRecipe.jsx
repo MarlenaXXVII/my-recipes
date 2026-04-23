@@ -16,20 +16,20 @@ function NewRecipe() {
         }
 
         const decoded = jwtDecode(token);
+        const imageFile = form.image?.files?.[0];
 
         const recipeData = {
             title: form.title.value,
             description: form.description.value,
             instructions: form.instructions.value,
-            image: null,
             servings: Number(form.servings.value),
             prepTimeMinutes: Number(form.prepTimeMinutes.value),
             cookTimeMinutes: Number(form.cookTimeMinutes.value),
             difficulty: form.difficulty.value,
-            calories: Number(form.calories.value),
-            protein: Number(form.protein.value),
-            carbs: Number(form.carbs.value),
-            fat: Number(form.fat.value),
+            calories: form.calories.value ? Number(form.calories.value) : null,
+            protein: form.protein.value ? Number(form.protein.value) : null,
+            carbs: form.carbs.value ? Number(form.carbs.value) : null,
+            fat: form.fat.value ? Number(form.fat.value) : null,
             ownerProfileId: Number(decoded.userId),
         };
 
@@ -48,6 +48,22 @@ function NewRecipe() {
             );
 
             const recipeId = recipeResponse.data.id;
+
+            if (imageFile) {
+                const imageFormData = new FormData();
+                imageFormData.append('image', imageFile);
+
+                await axios.patch(
+                    `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes/${recipeId}`,
+                    imageFormData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
+                        },
+                    }
+                );
+            }
 
             await Promise.all(
                 selectedCategoryIds.map((categoryId) =>

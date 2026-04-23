@@ -106,6 +106,7 @@ function EditRecipe() {
         const decoded = jwtDecode(token);
         const currentUserId = Number(decoded.userId);
         const isAdmin = decoded.role === 'admin';
+        const imageFile = form.image?.files?.[0];
 
         if (!isAdmin && currentUserId !== Number(initialValues.ownerProfileId)) {
             navigate(`/recept/${id}`);
@@ -125,15 +126,14 @@ function EditRecipe() {
             title: form.title.value,
             description: form.description.value,
             instructions: form.instructions.value,
-            image: initialValues.image || null,
             servings: Number(form.servings.value),
             prepTimeMinutes: Number(form.prepTimeMinutes.value),
             cookTimeMinutes: Number(form.cookTimeMinutes.value),
             difficulty: form.difficulty.value,
-            calories: Number(form.calories.value),
-            protein: Number(form.protein.value),
-            carbs: Number(form.carbs.value),
-            fat: Number(form.fat.value),
+            calories: form.calories.value ? Number(form.calories.value) : null,
+            protein: form.protein.value ? Number(form.protein.value) : null,
+            carbs: form.carbs.value ? Number(form.carbs.value) : null,
+            fat: form.fat.value ? Number(form.fat.value) : null,
         };
 
         try {
@@ -142,6 +142,21 @@ function EditRecipe() {
                 updatedRecipeData,
                 headers
             );
+            if (imageFile) {
+                const imageFormData = new FormData();
+                imageFormData.append('image', imageFile);
+
+                await axios.patch(
+                    `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes/${id}`,
+                    imageFormData,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
+                        },
+                    }
+                );
+            }
 
             const [recipeIngredientsResponse, recipeCategoriesResponse] = await Promise.all([
                 axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_ingredients', headers),
