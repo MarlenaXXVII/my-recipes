@@ -23,7 +23,6 @@
     width: 100%;
 }
 .secondaryButton {
-    display: inline-flex;
     align-items: center;
     gap: 8px;
 }
@@ -113,4 +112,13 @@
 .checked-item-amount {
     text-decoration: line-through;
     opacity: 0.55;
+}
+@media screen and (max-width: 768px) {
+    .shopping-list-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+    .header-right {
+        padding-bottom: 10px;
+    }
 }

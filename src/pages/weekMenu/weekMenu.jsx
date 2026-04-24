@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import axios from 'axios';
+import appLogoOnly from "../../assets/appLogoOnly.svg";
 
 function WeekMenuPage() {
     const [weekmenuItems, setWeekmenuItems] = useState([]);
@@ -395,6 +396,8 @@ function WeekMenuPage() {
         });
     }
 
+    const BASE_URL = 'https://novi-backend-api-wgsgz.ondigitalocean.app';
+
     return (
         <main className="weekmenu-page">
             <div className="container">
@@ -448,20 +451,31 @@ function WeekMenuPage() {
                                         <p>Nog geen maaltijden</p>
                                     </div>
                                 ) : (
-                                    day.meals.map((meal) => (
-                                        <div className="weekmenu-recipe-card" key={meal.id}>
-                                            <img
-                                                src={meal.image}
-                                                alt={meal.title}
-                                                className="weekmenu-recipe-card-image"
-                                            />
+                                    day.meals.map((meal) => {
+                                        const imageSrc = meal.image
+                                            ? meal.image.base64
+                                                ? `data:${meal.image.contentType};base64,${meal.image.base64}`
+                                                : `${BASE_URL}${meal.image}`
+                                            : appLogoOnly;
 
-                                            <div className="weekmenu-recipe-card-content">
-                                                <span>{meal.servings} porties</span>
-                                                <span>{meal.time} min</span>
+                                        return (
+                                            <div className="weekmenu-recipe-card" key={meal.id}>
+                                                <img
+                                                    src={imageSrc}
+                                                    alt={meal.title}
+                                                    className="weekmenu-recipe-card-image"
+                                                    onError={(e) => {
+                                                        e.currentTarget.src = appLogoOnly;
+                                                    }}
+                                                />
+
+                                                <div className="weekmenu-recipe-card-content">
+                                                    <span>{meal.servings} porties</span>
+                                                    <span>{meal.time} min</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))
+                                        );
+                                    })
                                 )}
                             </div>
 

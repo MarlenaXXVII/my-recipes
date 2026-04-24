@@ -123,3 +123,81 @@ nav a {
         max-width: 1280px;
     }
 }
+@media screen and (max-width: 768px) {
+    .App {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 12px;
+    }
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 0.75rem 1rem;
+    }
+    .inner-container {
+        padding: 0 8px;
+    }
+    .intro-wrapper {
+        padding: 0;
+        text-align: center;
+    }
+    h1 {
+        font-size: 38px;
+        line-height: 1.15;
+    }
+    h2 {
+        font-size: 28px;
+        line-height: 1.2;
+    }
+    p {
+        font-size: 16px;
+    }
+    .primaryButton,
+    .secondaryButton {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+    .error-banner {
+        max-width: 100%;
+        margin: 16px 0;
+        padding: 12px 14px;
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .App {
+        padding: 0 10px;
+    }
+
+    .container {
+        padding: 0.5rem 0.75rem;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 15px;
+    }
+
+    .navigation  ul{
+        display: none;
+    }
+
+    .primaryButton,
+    .secondaryButton {
+        text-align: center;
+    }
+
+    .error-banner {
+        gap: 8px;
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+}
