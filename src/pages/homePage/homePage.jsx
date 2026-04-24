@@ -42,8 +42,8 @@ function Homepage() {
                     </p>
                 </div>
                 <div className={"intro-buttons"}>
-                    <NavLink to="/" className={"primaryButton"} type={"button"}>Aan de slag</NavLink>
-                    <NavLink to="/" className={"secondaryButton"} type={"button"}>Bekijk recepten</NavLink>
+                    <NavLink to="/nieuw-recept" className={"primaryButton"} type={"button"}>Maak een nieuw recept</NavLink>
+                    <NavLink to="/alle-recepten" className={"secondaryButton"} type={"button"}>Bekijk recepten</NavLink>
                 </div>
             </div>
             <div className="tile-wrapper">

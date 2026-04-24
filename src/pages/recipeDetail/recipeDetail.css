@@ -273,3 +273,22 @@
     line-height: 1.7;
     color: #4A5565;
 }
+@media screen and (max-width: 768px) {
+    .recipe-detail-layout {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .recipe-image {
+        height: 240px;
+    }
+    .recipe-info-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .recipe-title-and-button {
+        flex-direction: column;
+        gap: 16px;
+    }
+}

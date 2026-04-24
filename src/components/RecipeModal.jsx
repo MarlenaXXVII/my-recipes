@@ -1,5 +1,5 @@
 import { Clock, Users, Flame, Search, X } from 'lucide-react';
-
+import appLogoOnly from '../assets/appLogoOnly.svg';
 function RecipeModal({
                          isOpen,
                          onClose,
@@ -14,7 +14,7 @@ function RecipeModal({
                          error,
                      }) {
     if (!isOpen) return null;
-
+    const BASE_URL = 'https://novi-backend-api-wgsgz.ondigitalocean.app';
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="recipe-modal" onClick={(e) => e.stopPropagation()}>
@@ -24,7 +24,6 @@ function RecipeModal({
                         <p>Kies een recept voor deze maaltijd</p>
                         {error && <p className="field-error">{error}</p>}
                     </div>
-
                     <button
                         type="button"
                         className="recipe-modal-close-button"
@@ -33,7 +32,6 @@ function RecipeModal({
                         <X />
                     </button>
                 </div>
-
                 <div className="recipe-modal-content">
                     <div className="recipe-modal-search">
                         <Search />
@@ -44,7 +42,6 @@ function RecipeModal({
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-
                     <div className="recipe-modal-tags">
                         {modalTags.map((tag) => (
                             <button
@@ -59,7 +56,6 @@ function RecipeModal({
                             </button>
                         ))}
                     </div>
-
                     <div className="recipe-modal-grid">
                         {filteredRecipes.length === 0 ? (
                             <p>Geen recepten gevonden.</p>
@@ -68,7 +64,11 @@ function RecipeModal({
                                 const totalTime =
                                     Number(recipe.prepTimeMinutes || 0) +
                                     Number(recipe.cookTimeMinutes || 0);
-
+                                const imageSrc = recipe.image
+                                    ? recipe.image.base64
+                                        ? `data:${recipe.image.contentType};base64,${recipe.image.base64}`
+                                        : `${BASE_URL}${recipe.image}`
+                                    : appLogoOnly;
                                 return (
                                     <button
                                         key={recipe.id}
@@ -79,16 +79,17 @@ function RecipeModal({
                                     >
                                         <div className="recipe-select-card-image-wrapper">
                                             <img
-                                                src={recipe.image}
+                                                src={imageSrc}
                                                 alt={recipe.title}
                                                 className="recipe-select-card-image"
+                                                onError={(e) => {
+                                                    e.currentTarget.src = appLogoOnly;
+                                                }}
                                             />
                                         </div>
-
                                         <div className="recipe-select-card-content">
                                             <h3>{recipe.title}</h3>
                                             <p>{recipe.description}</p>
-
                                             <div className="recipe-select-card-footer">
                                                 <span><Clock />{totalTime} min</span>
                                                 <span><Users />{recipe.servings}</span>
@@ -105,5 +106,4 @@ function RecipeModal({
         </div>
     );
 }
-
 export default RecipeModal;
