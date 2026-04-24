@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from "react-router-dom";
+import CategoryTags from "../components/CategoryTags";
 import axios from 'axios';
 
 function RecipeForm({ initialValues, onSave, buttonText, title, cancelPath }) {
@@ -259,16 +260,11 @@ function RecipeForm({ initialValues, onSave, buttonText, title, cancelPath }) {
                 <section className="formSection">
                     <h2>Categorieën</h2>
                     <div className="categories">
-                        {allCategories.map((category) => (
-                            <button
-                                key={category.id}
-                                type="button"
-                                className={`category ${selectedCategoryIds.includes(category.id) ? 'active' : ''}`}
-                                onClick={() => toggleCategory(category.id)}
-                            >
-                                {category.name}
-                            </button>
-                        ))}
+                        <CategoryTags
+                            categories={allCategories}
+                            selectedCategories={selectedCategoryIds}
+                            onToggleCategory={toggleCategory}
+                        />
                     </div>
                 </section>
 
