@@ -40,6 +40,28 @@ p{
     transform: translateY(-1px);
     box-shadow: 0 10px 24px rgba(37, 99, 235, 0.26);
 }
+.search-bar-wrapper {
+    position: relative;
+    width: 100%;
+    font-size: 16px;
+    margin: 0 0 16px 0;
+}
+.search-bar {
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+}
+.search-bar-wrapper svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: #9CA3AF;
+}
+.search-bar::placeholder {
+    color: #9CA3AF;
+}
 .secondaryButton{
     background-color: white;
     color: #364153;

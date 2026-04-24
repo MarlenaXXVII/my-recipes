@@ -1,10 +1,11 @@
 import './recipeOverview.css';
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { Clock, Users, Flame, ChevronRight, ChevronLeft } from 'lucide-react';
-import appLogoOnly from "../../assets/appLogoOnly.svg";
+import { ChevronRight, ChevronLeft } from 'lucide-react';
+import RecipeList from "../../components/RecipeList";
+import SearchBar from "../../components/SearchBar";
+import CategoryTags from "../../components/CategoryTags.jsx";
 
 function AllRecipe({ onlyMine = false }) {
     const [recipes, setRecipes] = useState([]);
@@ -12,6 +13,7 @@ function AllRecipe({ onlyMine = false }) {
     const [recipeCategories, setRecipeCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [error, setError] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
     const token = localStorage.getItem('token');
     const decoded = token ? jwtDecode(token) : null;
     const userId = decoded?.userId;
@@ -32,6 +34,16 @@ function AllRecipe({ onlyMine = false }) {
     let filteredRecipes = onlyMine
         ? recipes.filter(recipe => recipe.ownerProfileId === userId)
         : recipes;
+
+    if (searchTerm.trim() !== "") {
+        filteredRecipes = filteredRecipes.filter((recipe) => {
+            const title = recipe.title?.toLowerCase() || "";
+            const description = recipe.description?.toLowerCase() || "";
+            const searchValue = searchTerm.toLowerCase();
+
+            return title.includes(searchValue) || description.includes(searchValue);
+        });
+    }
 
     if (selectedCategory !== "all") {
         filteredRecipes = filteredRecipes.filter((recipe) =>
@@ -73,7 +85,6 @@ function AllRecipe({ onlyMine = false }) {
         fetchData();
     }, []);
 
-    const BASE_URL = 'https://novi-backend-api-wgsgz.ondigitalocean.app';
 
     return (
         <main className="recipe-page">
@@ -87,32 +98,20 @@ function AllRecipe({ onlyMine = false }) {
                     </p>
 
                     <div className="search-bar-wrapper">
-                        <input
-                            type="text"
-                            className="search-bar"
-                            placeholder="Zoek recepten..."
+                        <SearchBar
+                            value={searchTerm}
+                            onChange={setSearchTerm}
                         />
                     </div>
 
                     <div className="filter-tags">
-                        <button
-                            type="button"
-                            className={`filter-tag ${selectedCategory === "all" ? "active" : ""}`}
-                            onClick={() => setSelectedCategory("all")}
-                        >
-                            Alle
-                        </button>
-
-                        {categories.map((category) => (
-                            <button
-                                key={category.id}
-                                type="button"
-                                className={`filter-tag ${selectedCategory === category.id ? "active" : ""}`}
-                                onClick={() => setSelectedCategory(category.id)}
-                            >
-                                {category.name}
-                            </button>
-                        ))}
+                        <CategoryTags
+                            categories={categories}
+                            selectedCategories={selectedCategory}
+                            onToggleCategory={setSelectedCategory}
+                            showAll={true}
+                            onSelectAll={() => setSelectedCategory("all")}
+                        />
                     </div>
                 </div>
             </section>
@@ -126,45 +125,11 @@ function AllRecipe({ onlyMine = false }) {
 
                 {recipes.length > 0 && (
                     <>
-                        <div className="recipe-grid">
-                            {filteredRecipes.map((recipe) => {
-                                const imageSrc = recipe.image
-                                    ? recipe.image.base64
-                                        ? `data:${recipe.image.contentType};base64,${recipe.image.base64}`
-                                        : `${BASE_URL}${recipe.image}`
-                                    : appLogoOnly;
-
-                                return (
-                                    <article className="recipe-card" key={recipe.id}>
-                                        <Link to={`/recept/${recipe.id}`} className="recipe-card-link">
-                                            <div className="recipe-card-image-wrapper">
-                                                <img
-                                                    src={imageSrc}
-                                                    alt={recipe.title}
-                                                    className="recipe-card-image"
-                                                />
-                                                {recipeCategoryMap[recipe.id]?.length > 0 && (
-                                                    <span className="recipe-category-badge">
-                                                        {categoryMap[recipeCategoryMap[recipe.id][0]]}
-                                                    </span>
-                                                )}
-                                            </div>
-
-                                            <div className="recipe-card-content">
-                                                <h3>{recipe.title}</h3>
-                                                <p>{recipe.description}</p>
-
-                                                <div className="recipe-meta">
-                                                    <span><Clock /> {recipe.prepTimeMinutes} min</span>
-                                                    <span><Users /> {recipe.servings} pers.</span>
-                                                    <span><Flame /> {recipe.calories} kcal</span>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    </article>
-                                );
-                            })}
-                        </div>
+                        <RecipeList
+                            recipes={filteredRecipes}
+                            recipeCategoryMap={recipeCategoryMap}
+                            categoryMap={categoryMap}
+                        />
 
                         <div className="pagination">
                             <button type="button" className="pagination-button"><ChevronLeft /></button>

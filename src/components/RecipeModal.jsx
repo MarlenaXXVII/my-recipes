@@ -1,5 +1,8 @@
-import { Clock, Users, Flame, Search, X } from 'lucide-react';
+import { Clock, Users, Flame, X } from 'lucide-react';
 import appLogoOnly from '../assets/appLogoOnly.svg';
+import SearchBar from "../components/SearchBar.jsx";
+import CategoryTags from "./CategoryTags.jsx";
+
 function RecipeModal({
                          isOpen,
                          onClose,
@@ -33,28 +36,18 @@ function RecipeModal({
                     </button>
                 </div>
                 <div className="recipe-modal-content">
-                    <div className="recipe-modal-search">
-                        <Search />
-                        <input
-                            type="text"
-                            placeholder="Zoek recepten..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
+                    <SearchBar
+                        value={searchTerm}
+                        onChange={setSearchTerm}
+                    />
                     <div className="recipe-modal-tags">
-                        {modalTags.map((tag) => (
-                            <button
-                                key={tag}
-                                type="button"
-                                className={`recipe-tag-filter ${selectedTag === tag ? 'active' : ''}`}
-                                onClick={() =>
-                                    setSelectedTag((prev) => (prev === tag ? '' : tag))
-                                }
-                            >
-                                {tag}
-                            </button>
-                        ))}
+                        <CategoryTags
+                            categories={modalTags}
+                            selectedCategories={selectedTag}
+                            onToggleCategory={(tag) =>
+                                setSelectedTag((prev) => (prev === tag ? "" : tag))
+                            }
+                        />
                     </div>
                     <div className="recipe-modal-grid">
                         {filteredRecipes.length === 0 ? (
