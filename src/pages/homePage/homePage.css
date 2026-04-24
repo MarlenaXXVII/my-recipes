@@ -39,6 +39,7 @@
     justify-content: center;
     gap: 24px;
     align-items: center;
+    text-align: center;
     padding-bottom: 40px;
  }
 .intro-buttons{

@@ -163,3 +163,45 @@ textarea::placeholder {
     justify-content: flex-end;
     gap: 12px;
 }
+@media screen and (max-width: 768px) {
+
+    .ingredient-row {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .small-field {
+        flex: 1 1 80px;
+    }
+    .medium-field {
+        flex: 1 1 120px;
+    }
+    .large-field {
+        flex: 1 1 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .recipe-form {
+        padding: 0 5px;
+        gap: 20px;
+    }
+    .small-field,
+    .medium-field,
+    .large-field {
+        flex: 1 1 100%;
+    }
+    .remove-ingredient-button {
+        align-self: flex-end;
+        background-color: #ff00002b;
+    }
+    .category {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+    .buttons {
+        flex-direction: column;
+    }
+    .buttons button {
+        width: 100%;
+    }
+}

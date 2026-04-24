@@ -5,14 +5,14 @@ import Auth from './pages/auth/auth.jsx';
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./context/AuthContext.jsx";
 import Homepage from './pages/homePage/homePage.jsx';
-import NewRecipe from './pages/newRecipe/newRecipe.jsx';
+import NewRecipe from './pages/addEditRecipe/newRecipe.jsx';
 import AllRecipe from './pages/recipeOverview/recipeOverview.jsx';
 import WeekMenu from './pages/weekMenu/weekMenu.jsx';
 import GroceryList from './pages/shoppingList/shoppingList.jsx';
 import RecipeDetail from './pages/recipeDetail/recipeDetail.jsx';
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
-import EditRecipe from "./pages/editRecipe/editRecipe.jsx";
+import EditRecipe from "./pages/addEditRecipe/editRecipe.jsx";
 
 function App() {
     const { isAuth } = useContext(AuthContext);

@@ -212,3 +212,13 @@
     color: #FFFFFF;
     border-color: #155DFC;
 }
+
+@media screen and (max-width: 480px) {
+    .search-bar {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+    .filter-tag{
+        font-size: 11px;
+    }
+}
