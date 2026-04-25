@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import RecipeForm from "../../components/RecipeForm.jsx";
 import getRecipeIngredients from "../../helpers/getRecipeIngredients.js";
 import getRecipeCategories from "../../helpers/getRecipeCategories.js";
+import api from "../../helpers/api";
 
 function EditRecipe() {
     const { id } = useParams();
@@ -25,10 +25,6 @@ function EditRecipe() {
                 const currentUserId = Number(decoded.userId);
                 const isAdmin = decoded.role === 'admin';
 
-                const headers = {
-                    'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                };
-
                 const [
                     recipeResponse,
                     recipeIngredientsResponse,
@@ -36,11 +32,11 @@ function EditRecipe() {
                     recipeCategoriesResponse,
                     categoriesResponse
                 ] = await Promise.all([
-                    axios.get(`https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes/${id}`, { headers }),
-                    axios.get(`https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_ingredients`, { headers }),
-                    axios.get(`https://novi-backend-api-wgsgz.ondigitalocean.app/api/ingredients`, { headers }),
-                    axios.get(`https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_categories`, { headers }),
-                    axios.get(`https://novi-backend-api-wgsgz.ondigitalocean.app/api/categories`, { headers }),
+                    api.get(`/api/recipes/${id}`),
+                    api.get("/api/recipe_ingredients"),
+                    api.get("/api/ingredients"),
+                    api.get("/api/recipe_categories"),
+                    api.get("/api/categories"),
                 ]);
 
                 const recipe = recipeResponse.data;
@@ -137,30 +133,25 @@ function EditRecipe() {
         };
 
         try {
-            await axios.put(
-                `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes/${id}`,
+            await api.put(`/api/recipes/${id}`,
                 updatedRecipeData,
                 headers
             );
+
             if (imageFile) {
                 const imageFormData = new FormData();
                 imageFormData.append('image', imageFile);
 
-                await axios.patch(
-                    `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes/${id}`,
+                await api.patch(`/api/recipes/${id}`,
                     imageFormData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        },
-                    }
+                    headers
                 );
             }
 
             const [recipeIngredientsResponse, recipeCategoriesResponse] = await Promise.all([
-                axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_ingredients', headers),
-                axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_categories', headers),
+                api.get("/api/recipe_ingredients", headers),
+                api.get("/api/recipe_categories", headers),
+
             ]);
 
             const currentIngredientLinks = recipeIngredientsResponse.data.filter(
@@ -173,20 +164,17 @@ function EditRecipe() {
 
             await Promise.all([
                 ...currentIngredientLinks.map((item) =>
-                    axios.delete(`https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_ingredients/${item.id}`, headers)
+                    api.delete(`/api/recipe_ingredients/${item.id}`, headers)
                 ),
                 ...currentCategoryLinks.map((item) =>
-                    axios.delete(`https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_categories/${item.id}`, headers)
+                    api.delete(`/api/recipe_categories/${item.id}`, headers)
                 ),
             ]);
 
-            await Promise.all(
+            await
                 selectedCategoryIds.map((categoryId) =>
-                    axios.post(
-                        'https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_categories', {recipeId: Number(id), categoryId,}, headers
-                    )
-                )
-            );
+                    api.post("/api/recipe_categories", {recipeId: Number(id), categoryId,}, headers)
+                );
 
             const filledIngredients = ingredients.filter(
                 (ingredient) =>
@@ -205,15 +193,11 @@ function EditRecipe() {
                 if (existingIngredient) {
                     ingredientId = existingIngredient.id;
                 } else {
-                    const newIngredientResponse = await axios.post(
-                        'https://novi-backend-api-wgsgz.ondigitalocean.app/api/ingredients', {name: ingredient.name.trim(),}, headers
-                    );
-
+                    const newIngredientResponse = await api.post("/api/ingredients", {name: ingredient.name.trim(),}, headers);
                     ingredientId = newIngredientResponse.data.id;
                 }
 
-                await axios.post(
-                    'https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_ingredients',
+                await api.post("/api/recipe_ingredients",
                     {
                         recipeId: Number(id),
                         ingredientId,

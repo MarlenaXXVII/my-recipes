@@ -7,18 +7,14 @@ import myRecipes from "../../assets/myRecipes.png";
 import newRecipe from "../../assets/newRecipe.png";
 import tryThis from "../../assets/tryThis.png";
 import {NavLink, useNavigate} from "react-router-dom";
-import axios from "axios";
+import api from "../../helpers/api.js";
 
 function Homepage() {
     const navigate = useNavigate();
 
     const handleRandomRecipe = async () => {
         try {
-            const response = await axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes', {
-                headers: {
-                    "novi-education-project-id": '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                }
-            });
+            const response = await api.get("/api/recipes");
             const data = response.data;
 
             if (!Array.isArray(data) || data.length === 0) return;

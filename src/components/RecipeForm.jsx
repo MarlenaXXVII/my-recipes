@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from "react-router-dom";
 import CategoryTags from "../components/CategoryTags";
-import axios from 'axios';
+import api from "../helpers/api.js";
 
 function RecipeForm({ initialValues, onSave, buttonText, title, cancelPath }) {
     const [allCategories, setAllCategories] = useState([]);
@@ -21,16 +21,8 @@ function RecipeForm({ initialValues, onSave, buttonText, title, cancelPath }) {
         async function fetchFormOptions() {
             try {
                 const [categoriesResponse, ingredientsResponse] = await Promise.all([
-                    axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/categories', {
-                        headers: {
-                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        },
-                    }),
-                    axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/ingredients', {
-                        headers: {
-                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        },
-                    }),
+                    api.get("/api/categories"),
+                    api.get("/api/ingredients"),
                 ]);
 
                 setAllCategories(categoriesResponse.data);

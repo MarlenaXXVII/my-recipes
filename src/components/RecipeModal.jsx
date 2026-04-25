@@ -17,7 +17,7 @@ function RecipeModal({
                          error,
                      }) {
     if (!isOpen) return null;
-    const BASE_URL = 'https://novi-backend-api-wgsgz.ondigitalocean.app';
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="recipe-modal" onClick={(e) => e.stopPropagation()}>
