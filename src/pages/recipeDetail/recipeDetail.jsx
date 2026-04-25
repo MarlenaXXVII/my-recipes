@@ -1,7 +1,7 @@
 import './recipeDetail.css';
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../helpers/api.js";
 import { jwtDecode } from "jwt-decode";
 import makeInstructionsReadable from "../../helpers/makeInstructionsReadable.js";
 import getRecipeIngredients from "../../helpers/getRecipeIngredients.js";
@@ -32,31 +32,18 @@ function RecipeDetail() {
     useEffect(() => {
         async function fetchRecipeData() {
             try {
-                const headers = {
-                    'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                };
-
-                const [recipeResponse, recipeIngredientsResponse, ingredientsResponse, recipeCategoriesResponse, categoriesResponse] = await Promise.all([
-                    axios.get(
-                        `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes/${id}`,
-                        { headers }
-                    ),
-                    axios.get(
-                        `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_ingredients`,
-                        { headers }
-                    ),
-                    axios.get(
-                        `https://novi-backend-api-wgsgz.ondigitalocean.app/api/ingredients`,
-                        { headers }
-                    ),
-                    axios.get(
-                        `https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_categories`,
-                        { headers }
-                    ),
-                    axios.get(
-                        `https://novi-backend-api-wgsgz.ondigitalocean.app/api/categories`,
-                        { headers }
-                    ),
+                const [
+                    recipeResponse,
+                    recipeIngredientsResponse,
+                    ingredientsResponse,
+                    recipeCategoriesResponse,
+                    categoriesResponse,
+                ] = await Promise.all([
+                    api.get(`/api/recipes/${id}`),
+                    api.get("/api/recipe_ingredients"),
+                    api.get("/api/ingredients"),
+                    api.get("/api/recipe_categories"),
+                    api.get("/api/categories"),
                 ]);
 
                 const recipeData = recipeResponse.data;
@@ -104,7 +91,7 @@ function RecipeDetail() {
     const isOwner = Number(recipe.ownerProfileId) === currentUserId;
     const canEdit = isOwner || isAdmin;
 
-    const BASE_URL = 'https://novi-backend-api-wgsgz.ondigitalocean.app';
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     const imageSrc = recipe.image
         ? recipe.image.base64

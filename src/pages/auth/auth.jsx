@@ -3,7 +3,7 @@ import appLogoOnly from '../../assets/appLogoOnly.svg'
 import {useContext, useState} from 'react';
 import {AuthContext} from "../../context/AuthContext.jsx";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+import api from "../../helpers/api.js";
 
 function Auth() {
     const [isRegister, setIsRegister] = useState(false);
@@ -15,66 +15,42 @@ function Auth() {
 
     async function handleLogin(data) {
         try {
-            const response = await axios.post(
-                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/login',
-                {
-                    email: data.email,
-                    password: data.password,
-                },
-                {
-                    headers: {
-                        'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                    },
-                }
-            );
+            const response = await api.post("/api/login", {
+                email: data.email,
+                password: data.password,
+            });
+
             login(response.data);
         } catch (err) {
-            console.error('Login fout:', err);
+            console.error("Login fout:", err);
         }
     }
 
     async function handleRegister(data) {
         try {
-            const userResponse = await axios.post(
-                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/users',
-                {
-                    email: data.email,
-                    password: data.password,
-                    roles: ['user'],
-                },
-                {
-                    headers: {
-                        'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                    },
-                }
-            );
+            const userResponse = await api.post("/api/users", {
+                email: data.email,
+                password: data.password,
+                roles: ["user"],
+            });
 
             const userId = userResponse.data.id;
 
-            const loginResponse = await axios.post(
-                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/login',
-                {
-                    email: data.email,
-                    password: data.password,
-                },
-                {
-                    headers: {
-                        'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                    },
-                }
-            );
+            const loginResponse = await api.post("/api/login", {
+                email: data.email,
+                password: data.password,
+            });
 
             const token = loginResponse.data.token;
 
-            await axios.post(
-                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/profiles',
+            await api.post(
+                "/api/profiles",
                 {
                     userId: userId,
                     username: data.username,
                 },
                 {
                     headers: {
-                        'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
                         Authorization: `Bearer ${token}`,
                     },
                 }
@@ -82,20 +58,13 @@ function Auth() {
 
             login(loginResponse.data);
         } catch (err) {
-            console.error('Registratie fout:', err.response?.data || err.message);
+            console.error("Registratie fout:", err.response?.data || err.message);
         }
     }
 
     async function checkIfEmailExists(email) {
         try {
-            const response = await axios.get(
-                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/users',
-                {
-                    headers: {
-                        'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                    },
-                }
-            );
+            const response = await api.get("/api/users");
 
             const users = response.data;
             return users.some((user) => user.email === email);

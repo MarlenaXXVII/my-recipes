@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Clock, Users, Flame } from "lucide-react";
 import appLogoOnly from "../assets/appLogoOnly.svg";
 
-const BASE_URL = "https://novi-backend-api-wgsgz.ondigitalocean.app";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 function RecipeCard({ recipe, categoryName }) {
     const imageSrc = recipe.image

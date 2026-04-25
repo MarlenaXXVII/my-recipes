@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { ChevronRight, ChevronLeft } from 'lucide-react';
-import axios from 'axios';
 import appLogoOnly from "../../assets/appLogoOnly.svg";
+import api from "../../helpers/api";
 
 function WeekMenuPage() {
     const [weekmenuItems, setWeekmenuItems] = useState([]);
@@ -28,6 +28,12 @@ function WeekMenuPage() {
     const token = localStorage.getItem('token');
     const decoded = token ? jwtDecode(token) : null;
     const userId = decoded?.userId;
+
+    const authHeader = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
 
     const modalTags = categories.map((category) => category.name);
 
@@ -111,55 +117,12 @@ function WeekMenuPage() {
                 ingredientsResponse,
                 recipeIngredientsResponse,
             ] = await Promise.all([
-                axios.get(
-                    `https://novi-backend-api-wgsgz.ondigitalocean.app/api/profiles/${userId}/weekmenu_items`,
-                    {
-                        headers: {
-                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                ),
-                axios.get(
-                    'https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes',
-                    {
-                        headers: {
-                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        },
-                    }
-                ),
-                axios.get(
-                    'https://novi-backend-api-wgsgz.ondigitalocean.app/api/categories',
-                    {
-                        headers: {
-                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        },
-                    }
-                ),
-                axios.get(
-                    'https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_categories',
-                    {
-                        headers: {
-                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        },
-                    }
-                ),
-                axios.get(
-                    'https://novi-backend-api-wgsgz.ondigitalocean.app/api/ingredients',
-                    {
-                        headers: {
-                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        },
-                    }
-                ),
-                axios.get(
-                    'https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_ingredients',
-                    {
-                        headers: {
-                            'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        },
-                    }
-                ),
+                api.get(`/api/profiles/${userId}/weekmenu_items`, authHeader),
+                api.get("/api/recipes"),
+                api.get("/api/categories"),
+                api.get("/api/recipe_categories"),
+                api.get("/api/ingredients"),
+                api.get("/api/recipe_ingredients"),
             ]);
 
             setWeekmenuItems(weekmenuResponse.data);
@@ -295,20 +258,15 @@ function WeekMenuPage() {
         try {
             setIsSaving(true);
 
-            await axios.post(
-                'https://novi-backend-api-wgsgz.ondigitalocean.app/api/weekmenu_items',
+            await api.post(
+                "/api/weekmenu_items",
                 {
                     profileId: userId,
                     recipeId: recipeId,
                     day: selectedDay,
                     date: selectedDate,
                 },
-                {
-                    headers: {
-                        'novi-education-project-id': '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
+                authHeader
             );
 
             await fetchWeekmenuData();
@@ -396,7 +354,7 @@ function WeekMenuPage() {
         });
     }
 
-    const BASE_URL = 'https://novi-backend-api-wgsgz.ondigitalocean.app';
+    const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     return (
         <main className="weekmenu-page">

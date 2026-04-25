@@ -1,11 +1,11 @@
 import './recipeOverview.css';
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { ChevronRight, ChevronLeft } from 'lucide-react';
 import RecipeList from "../../components/RecipeList";
 import SearchBar from "../../components/SearchBar";
 import CategoryTags from "../../components/CategoryTags.jsx";
+import api from "../../helpers/api";
 
 function AllRecipe({ onlyMine = false }) {
     const [recipes, setRecipes] = useState([]);
@@ -55,21 +55,9 @@ function AllRecipe({ onlyMine = false }) {
         async function fetchData() {
             try {
                 const [recipesResponse, categoriesResponse, recipeCategoriesResponse] = await Promise.all([
-                    axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipes', {
-                        headers: {
-                            "novi-education-project-id": '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        }
-                    }),
-                    axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/categories', {
-                        headers: {
-                            "novi-education-project-id": '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        }
-                    }),
-                    axios.get('https://novi-backend-api-wgsgz.ondigitalocean.app/api/recipe_categories', {
-                        headers: {
-                            "novi-education-project-id": '5a1ea178-e581-4983-a200-1089aaa6bb93',
-                        }
-                    })
+                    api.get("/api/recipes"),
+                    api.get("/api/categories"),
+                    api.get("/api/recipe_categories"),
                 ]);
 
                 setRecipes(recipesResponse.data);

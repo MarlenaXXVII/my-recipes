@@ -10,9 +10,9 @@ import AllRecipe from './pages/recipeOverview/recipeOverview.jsx';
 import WeekMenu from './pages/weekMenu/weekMenu.jsx';
 import GroceryList from './pages/shoppingList/shoppingList.jsx';
 import RecipeDetail from './pages/recipeDetail/recipeDetail.jsx';
-import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 import EditRecipe from "./pages/addEditRecipe/editRecipe.jsx";
+import api from "./helpers/api.js";
 
 function App() {
     const { isAuth } = useContext(AuthContext);
@@ -31,15 +31,12 @@ function App() {
                 const decoded = jwtDecode(token);
                 const profileId = decoded.userId;
 
-                const response = await axios.get(
-                    `https://novi-backend-api-wgsgz.ondigitalocean.app/api/profiles/${profileId}`,
-                    {
-                        headers: {
-                            "novi-education-project-id": "5a1ea178-e581-4983-a200-1089aaa6bb93",
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
+                const response = await api.get(`/api/profiles/${profileId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
                 setUsername(response.data.username || "Gebruiker");
             } catch (error) {
                 console.error(error);
