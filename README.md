@@ -1,6 +1,6 @@
 # Mijn Recepten
 
-Met Mijn Recepten kun je makkelijk recepten aanmaken en beheren, ze toevoegen aan een weekmenu en dat menu vervolgens downloaden. Handig toch?
+Met Mijn Recepten kun je makkelijk recepten aanmaken en beheren, ze toevoegen aan een weekmenu en dat menu vervolgens downloaden.
 
 ---
 
@@ -38,9 +38,9 @@ Zorg dat je dit op je computer hebt staan:
 
 - [Node.js](https://nodejs.org/) (v18 of hoger)
 - npm (komt automatisch mee met Node.js)
-- [Git](https://git-scm.com/)
+- Git (voor het klonen van de repository)
 
-Met deze commands kan je kijken of je de juiste versies hebt (geen specifieke versie vereist voor deze applicatie):
+Met deze commands kan je kijken of je de juiste versies hebt:
 
 ```bash
 node -v
@@ -64,13 +64,25 @@ cd my-recipes
 npm install
 ```
 
-### Stap 3 – App starten
+### Stap 3 – ENV bestand aanmaken
+
+Maak een bestand in de projectmap ".env". 
+
+```env
+VITE_API_URL=...
+VITE_API_KEY=...
+```
+
+Deze variabelen zijn nodig om verbinding te maken met de API. (Bestand is meegeleverd in de projectmap)
+
+
+### Stap 4 – App starten
 
 ```bash
 npm run dev
 ```
 
-### Stap 4 – Openen in je browser
+### Stap 5 – Openen in je browser
 
 Ga naar:
 
